@@ -37,6 +37,7 @@ app.use('/api/', carWashRouter);
 app.use('/api/', settingsRouter)
 
 // server
+// testing sequelize mysql
 
 const PORT = process.env.PORT || 5000;
 
