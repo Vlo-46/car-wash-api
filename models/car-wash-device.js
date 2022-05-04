@@ -34,12 +34,14 @@ module.exports = (sequelize, DataTypes) => {
 
     const DeviceSettings = sequelize.define('DeviceSettings')
     CarWashDevice.hasOne(DeviceSettings, {
-        foreignKey: 'device_id'
+        foreignKey: 'device_id',
+        // onDelete: 'CASCADE'
     })
 
     const Counter = sequelize.define('Counter')
     CarWashDevice.hasOne(Counter, {
-        foreignKey: 'device_id'
+        foreignKey: 'device_id',
+        // onDelete: 'CASCADE'
     })
 
     return CarWashDevice;

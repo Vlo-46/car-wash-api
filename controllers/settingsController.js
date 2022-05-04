@@ -459,8 +459,6 @@ const receiveDateTime = async (req, res) => {
         })
 
 
-        // let date = new Date().toISOString().replaceAll('-', '');
-
         const data = {
             success: true,
             dateTime: device.DeviceSetting.dateTime
