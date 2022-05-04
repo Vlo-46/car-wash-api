@@ -381,7 +381,7 @@ const getUsers = async (req, res) => {
             carWashPoints.forEach(point => idOfUsersFromTechnician.push(point.user_id))
 
             users = await User.findAll({
-                attributes: {exclude: ['password', 'token']},
+                attributes: {exclude: ['password', 'token', 'updatedAt']},
                 order: [["id", "DESC"]],
                 where: {
                     id: idOfUsersFromTechnician,
@@ -390,7 +390,7 @@ const getUsers = async (req, res) => {
             })
         } else if (role === constants.userTypes.ADMIN) {
             users = await User.findAll({
-                attributes: {exclude: ['password', 'token']},
+                attributes: {exclude: ['password', 'token', 'updatedAt']},
                 order: [["id", "DESC"]],
                 where: {
                     [Op.not]: [{id}]

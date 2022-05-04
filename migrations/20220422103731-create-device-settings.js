@@ -17,6 +17,7 @@ module.exports = {
             coinNominal: {
                 type: Sequelize.INTEGER,
                 allowNull: true,
+                defaultValue: 1,
                 validate: {
                     min: 1,
                     max: 10000,
@@ -25,6 +26,7 @@ module.exports = {
             billNominal: {
                 type: Sequelize.INTEGER,
                 allowNull: true,
+                defaultValue: 1,
                 validate: {
                     min: 1,
                     max: 10000,
@@ -34,6 +36,7 @@ module.exports = {
                 // type: Sequelize.ENUM,
                 // values: [constants.deviceSettings.mode.Cash, constants.deviceSettings.mode.Time],
                 type: Sequelize.INTEGER,
+                defaultValue: 0,
                 allowNull: true,
                 validate: {
                     min: 0,
@@ -44,6 +47,7 @@ module.exports = {
                 // type: Sequelize.ENUM,
                 // values: [constants.deviceSettings.bypass.Disabled, constants.deviceSettings.bypass.Enabled],
                 type: Sequelize.INTEGER,
+                defaultValue: 0,
                 allowNull: true,
                 validate: {
                     min: 0,
@@ -54,6 +58,7 @@ module.exports = {
                 // type: Sequelize.ENUM,
                 // values: [constants.deviceSettings.bypassChann.Disabled, constants.deviceSettings.bypassChann.Enabled],
                 type: Sequelize.INTEGER,
+                defaultValue: 0,
                 allowNull: true,
                 validate: {
                     min: 0,
@@ -62,6 +67,7 @@ module.exports = {
             },
             bpTime: {
                 type: Sequelize.INTEGER,
+                defaultValue: 0,
                 allowNull: true,
                 validate: {
                     min: 0,
@@ -70,6 +76,7 @@ module.exports = {
             },
             bonusPct: {
                 type: Sequelize.INTEGER,
+                defaultValue: 0,
                 allowNull: true,
                 validate: {
                     min: 0,
@@ -78,6 +85,7 @@ module.exports = {
             },
             bonusVal: {
                 type: Sequelize.INTEGER,
+                defaultValue: 0,
                 allowNull: true,
                 validate: {
                     min: 0,
@@ -86,6 +94,7 @@ module.exports = {
             },
             tBonusPct: {
                 type: Sequelize.INTEGER,
+                defaultValue: 0,
                 allowNull: true,
                 validate: {
                     min: 0,
@@ -94,6 +103,7 @@ module.exports = {
             },
             tBonusVal: {
                 type: Sequelize.INTEGER,
+                defaultValue: 0,
                 allowNull: true,
                 validate: {
                     min: 0,
@@ -102,14 +112,17 @@ module.exports = {
             },
             bonusSchStart: {
                 type: Sequelize.STRING, // 00:00 - 23:59
+                defaultValue: "00:00 - 23:59",
                 allowNull: true,
             },
             bonusSchEnd: {
                 type: Sequelize.STRING, // 00:00 - 23:59
+                defaultValue: "00:00 - 23:59",
                 allowNull: true,
             },
             tariffPct: {
                 type: Sequelize.INTEGER,
+                defaultValue: 0,
                 allowNull: true,
                 validate: {
                     min: 0,
@@ -119,14 +132,17 @@ module.exports = {
             tariffSchStart: {
                 type: Sequelize.STRING, // 00:00 - 23:59
                 allowNull: true,
+                defaultValue: "00:00 - 23:59",
             },
             tariffSchEnd: {
                 type: Sequelize.STRING, // 00:00 - 23:59
+                defaultValue: "00:00 - 23:59",
                 allowNull: true,
             },
             flowPulse1: {
                 type: Sequelize.INTEGER,
                 allowNull: true,
+                defaultValue: 0,
                 validate: {
                     min: 0,
                     max: 65535,
@@ -135,6 +151,7 @@ module.exports = {
             flowTimeout1: {
                 type: Sequelize.INTEGER,
                 allowNull: true,
+                defaultValue: 1,
                 validate: {
                     min: 1,
                     max: 65535,
@@ -143,6 +160,7 @@ module.exports = {
             flowPulse2: {
                 type: Sequelize.INTEGER,
                 allowNull: true,
+                defaultValue: 0,
                 validate: {
                     min: 0,
                     max: 65535,
@@ -151,6 +169,7 @@ module.exports = {
             flowTimeout2: {
                 type: Sequelize.INTEGER,
                 allowNull: true,
+                defaultValue: 1,
                 validate: {
                     min: 1,
                     max: 65535,
@@ -161,6 +180,7 @@ module.exports = {
                 // values: [constants.deviceSettings.hpt.Disabled, constants.deviceSettings.hpt.Enabled],
                 type: Sequelize.INTEGER,
                 allowNull: true,
+                defaultValue: 0,
                 validate: {
                     min: 0,
                     max: 1,
@@ -169,6 +189,7 @@ module.exports = {
             service: {
                 type: Sequelize.INTEGER,
                 allowNull: true,
+                defaultValue: 1,
                 validate: {
                     min: 1,
                     max: 9999,
@@ -177,6 +198,7 @@ module.exports = {
             bingoThr: {
                 type: Sequelize.INTEGER,
                 allowNull: true,
+                defaultValue: 0,
                 validate: {
                     min: 0,
                     max: 65535,
@@ -184,6 +206,7 @@ module.exports = {
             },
             bingoVal: {
                 type: Sequelize.INTEGER,
+                defaultValue: 0,
                 allowNull: true,
                 validate: {
                     min: 0,
@@ -194,6 +217,7 @@ module.exports = {
                 // type: Sequelize.ENUM,
                 // values: [constants.deviceSettings.hopper.Disabled, constants.deviceSettings.hopper.Enabled],
                 type: Sequelize.INTEGER,
+                defaultValue: 0,
                 allowNull: true,
                 validate: {
                     min: 0,
@@ -202,6 +226,7 @@ module.exports = {
             },
             hopperNominal: {
                 type: Sequelize.INTEGER,
+                defaultValue: 1,
                 allowNull: true,
                 validate: {
                     min: 1,
@@ -210,6 +235,7 @@ module.exports = {
             },
             hopperThreshold: {
                 type: Sequelize.INTEGER,
+                defaultValue: 0,
                 allowNull: true,
                 validate: {
                     min: 0,
@@ -220,6 +246,7 @@ module.exports = {
                 // type: Sequelize.ENUM,
                 // values: [constants.deviceSettings.language.English, constants.deviceSettings.language.Russian, constants.deviceSettings.language.Armenian, constants.deviceSettings.language.Georgian],
                 type: Sequelize.INTEGER,
+                defaultValue: 0,
                 allowNull: true,
                 validate: {
                     min: 0,
@@ -236,6 +263,7 @@ module.exports = {
                 // ],
                 type: Sequelize.INTEGER,
                 allowNull: true,
+                defaultValue: 0,
                 validate: {
                     min: 0,
                     max: 6,
@@ -254,6 +282,7 @@ module.exports = {
                 // ],
                 type: Sequelize.INTEGER,
                 allowNull: true,
+                defaultValue: 0,
                 validate: {
                     min: 0,
                     max: 7,
@@ -262,6 +291,7 @@ module.exports = {
             channels: {
                 type: Sequelize.INTEGER,
                 allowNull: true,
+                defaultValue: 0,
                 validate: {
                     min: 0,
                     max: 1000,
@@ -270,6 +300,7 @@ module.exports = {
             colors: {
                 type: Sequelize.INTEGER,
                 allowNull: true,
+                defaultValue: 1,
                 validate: {
                     min: 1,
                     max: 7,
@@ -278,6 +309,7 @@ module.exports = {
             screen: {
                 type: Sequelize.INTEGER,
                 allowNull: true,
+                defaultValue: 0,
                 validate: {
                     min: 0,
                     max: 1000,
@@ -286,6 +318,7 @@ module.exports = {
             devID: {
                 type: Sequelize.INTEGER,
                 allowNull: true,
+                defaultValue: 0,
                 validate: {
                     min: 0,
                     max: 255,
@@ -294,6 +327,7 @@ module.exports = {
             valveP: {
                 type: Sequelize.INTEGER,
                 allowNull: true,
+                defaultValue: 0,
                 validate: {
                     min: 0,
                     max: 1000,
@@ -302,6 +336,7 @@ module.exports = {
             ValveD: {
                 type: Sequelize.INTEGER,
                 allowNull: true,
+                defaultValue: 0,
                 validate: {
                     min: 0,
                     max: 1000,
@@ -310,6 +345,7 @@ module.exports = {
             ValveC: {
                 type: Sequelize.INTEGER,
                 allowNull: true,
+                defaultValue: 0,
                 validate: {
                     min: 0,
                     max: 1000,
@@ -319,6 +355,7 @@ module.exports = {
                 // type: Sequelize.ENUM,
                 // values: [constants.deviceSettings.bonusMode.CardOnly, constants.deviceSettings.bonusMode.Always],
                 type: Sequelize.INTEGER,
+                defaultValue: 0,
                 allowNull: true,
                 validate: {
                     min: 0,
@@ -329,6 +366,7 @@ module.exports = {
                 // type: Sequelize.ENUM,
                 // values: [constants.deviceSettings.pauseMode.Limited, constants.deviceSettings.pauseMode.Unlimited],
                 type: Sequelize.INTEGER,
+                defaultValue: 0,
                 allowNull: true,
                 validate: {
                     min: 0,

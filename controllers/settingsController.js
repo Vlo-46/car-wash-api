@@ -439,7 +439,7 @@ const sendExtendedSettings = async (req, res) => {
         if (configs[0]?.flowSensor[0]['timeout']) device.set({flowTimeout1: configs[0]?.flowSensor[0]['timeout']}) // discussion, flowSensor is array, (flowTimeout1, flowTimeout2)
         // relayOutput ?, and relayOutput is array
 
-        // await device.save()
+        await device.save()
 
         return res.send({device})
         // return res.send({success: true})

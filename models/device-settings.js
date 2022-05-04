@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         coinNominal: {
             type: DataTypes.INTEGER,
             allowNull: true,
+            defaultValue: 1,
             validate: {
                 min: 1,
                 max: 10000,
@@ -24,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
         billNominal: {
             type: DataTypes.INTEGER,
             allowNull: true,
+            defaultValue: 1,
             validate: {
                 min: 1,
                 max: 10000,
@@ -33,6 +35,7 @@ module.exports = (sequelize, DataTypes) => {
             // type: DataTypes.ENUM,
             // values: [constants.deviceSettings.mode.Cash, constants.deviceSettings.mode.Time],
             type: DataTypes.INTEGER,
+            defaultValue: 0,
             allowNull: true,
             validate: {
                 min: 0,
@@ -43,6 +46,7 @@ module.exports = (sequelize, DataTypes) => {
             // type: DataTypes.ENUM,
             // values: [constants.deviceSettings.bypass.Disabled, constants.deviceSettings.bypass.Enabled],
             type: DataTypes.INTEGER,
+            defaultValue: 0,
             allowNull: true,
             validate: {
                 min: 0,
@@ -53,6 +57,7 @@ module.exports = (sequelize, DataTypes) => {
             // type: DataTypes.ENUM,
             // values: [constants.deviceSettings.bypassChann.Disabled, constants.deviceSettings.bypassChann.Enabled],
             type: DataTypes.INTEGER,
+            defaultValue: 0,
             allowNull: true,
             validate: {
                 min: 0,
@@ -62,6 +67,7 @@ module.exports = (sequelize, DataTypes) => {
         bpTime: {
             type: DataTypes.INTEGER,
             allowNull: true,
+            defaultValue: 0,
             validate: {
                 min: 0,
                 max: 200,
@@ -70,6 +76,7 @@ module.exports = (sequelize, DataTypes) => {
         bonusPct: {
             type: DataTypes.INTEGER,
             allowNull: true,
+            defaultValue: 0,
             validate: {
                 min: 0,
                 max: 100,
@@ -78,6 +85,7 @@ module.exports = (sequelize, DataTypes) => {
         bonusVal: {
             type: DataTypes.INTEGER,
             allowNull: true,
+            defaultValue: 0,
             validate: {
                 min: 0,
                 max: 9999,
@@ -86,6 +94,7 @@ module.exports = (sequelize, DataTypes) => {
         tBonusPct: {
             type: DataTypes.INTEGER,
             allowNull: true,
+            defaultValue: 0,
             validate: {
                 min: 0,
                 max: 100,
@@ -94,6 +103,7 @@ module.exports = (sequelize, DataTypes) => {
         tBonusVal: {
             type: DataTypes.INTEGER,
             allowNull: true,
+            defaultValue: 0,
             validate: {
                 min: 0,
                 max: 9999,
@@ -101,15 +111,18 @@ module.exports = (sequelize, DataTypes) => {
         },
         bonusSchStart: {
             type: DataTypes.STRING, // 00:00 - 23:59
+            defaultValue: "00:00 - 23:59",
             allowNull: true,
         },
         bonusSchEnd: {
             type: DataTypes.STRING, // 00:00 - 23:59
+            defaultValue: "00:00 - 23:59",
             allowNull: true,
         },
         tariffPct: {
             type: DataTypes.INTEGER,
             allowNull: true,
+            defaultValue: 0,
             validate: {
                 min: 0,
                 max: 100,
@@ -117,15 +130,18 @@ module.exports = (sequelize, DataTypes) => {
         },
         tariffSchStart: {
             type: DataTypes.STRING, // 00:00 - 23:59
+            defaultValue: "00:00 - 23:59",
             allowNull: true,
         },
         tariffSchEnd: {
             type: DataTypes.STRING, // 00:00 - 23:59
+            defaultValue: "00:00 - 23:59",
             allowNull: true,
         },
         flowPulse1: {
             type: DataTypes.INTEGER,
             allowNull: true,
+            defaultValue: 0,
             validate: {
                 min: 0,
                 max: 65535,
@@ -134,6 +150,7 @@ module.exports = (sequelize, DataTypes) => {
         flowTimeout1: {
             type: DataTypes.INTEGER,
             allowNull: true,
+            defaultValue: 1,
             validate: {
                 min: 1,
                 max: 65535,
@@ -142,6 +159,7 @@ module.exports = (sequelize, DataTypes) => {
         flowPulse2: {
             type: DataTypes.INTEGER,
             allowNull: true,
+            defaultValue: 0,
             validate: {
                 min: 0,
                 max: 65535,
@@ -150,6 +168,7 @@ module.exports = (sequelize, DataTypes) => {
         flowTimeout2: {
             type: DataTypes.INTEGER,
             allowNull: true,
+            defaultValue: 1,
             validate: {
                 min: 1,
                 max: 65535,
@@ -159,6 +178,7 @@ module.exports = (sequelize, DataTypes) => {
             // type: DataTypes.ENUM,
             // values: [constants.deviceSettings.hpt.Disabled, constants.deviceSettings.hpt.Enabled],
             type: DataTypes.INTEGER,
+            defaultValue: 0,
             allowNull: true,
             validate: {
                 min: 0,
@@ -168,6 +188,7 @@ module.exports = (sequelize, DataTypes) => {
         service: {
             type: DataTypes.INTEGER,
             allowNull: true,
+            defaultValue: 1,
             validate: {
                 min: 1,
                 max: 9999,
@@ -176,6 +197,7 @@ module.exports = (sequelize, DataTypes) => {
         bingoThr: {
             type: DataTypes.INTEGER,
             allowNull: true,
+            defaultValue: 0,
             validate: {
                 min: 0,
                 max: 65535,
@@ -184,6 +206,7 @@ module.exports = (sequelize, DataTypes) => {
         bingoVal: {
             type: DataTypes.INTEGER,
             allowNull: true,
+            defaultValue: 0,
             validate: {
                 min: 0,
                 max: 65535,
@@ -193,6 +216,7 @@ module.exports = (sequelize, DataTypes) => {
             // type: DataTypes.ENUM,
             // values: [constants.deviceSettings.hopper.Disabled, constants.deviceSettings.hopper.Enabled],
             type: DataTypes.INTEGER,
+            defaultValue: 0,
             allowNull: true,
             validate: {
                 min: 0,
@@ -202,6 +226,7 @@ module.exports = (sequelize, DataTypes) => {
         hopperNominal: {
             type: DataTypes.INTEGER,
             allowNull: true,
+            defaultValue: 1,
             validate: {
                 min: 1,
                 max: 10000,
@@ -210,6 +235,7 @@ module.exports = (sequelize, DataTypes) => {
         hopperThreshold: {
             type: DataTypes.INTEGER,
             allowNull: true,
+            defaultValue: 0,
             validate: {
                 min: 0,
                 max: 10000,
@@ -219,6 +245,7 @@ module.exports = (sequelize, DataTypes) => {
             // type: DataTypes.ENUM,
             // values: [constants.deviceSettings.language.English, constants.deviceSettings.language.Russian, constants.deviceSettings.language.Armenian, constants.deviceSettings.language.Georgian],
             type: DataTypes.INTEGER,
+            defaultValue: 0,
             allowNull: true,
             validate: {
                 min: 0,
@@ -234,6 +261,7 @@ module.exports = (sequelize, DataTypes) => {
             //     constants.deviceSettings.currency.LEY
             // ],
             type: DataTypes.INTEGER,
+            defaultValue: 0,
             allowNull: true,
             validate: {
                 min: 0,
@@ -253,6 +281,7 @@ module.exports = (sequelize, DataTypes) => {
             // ],
             type: DataTypes.INTEGER,
             allowNull: true,
+            defaultValue: 0,
             validate: {
                 min: 0,
                 max: 7,
@@ -261,6 +290,7 @@ module.exports = (sequelize, DataTypes) => {
         channels: {
             type: DataTypes.INTEGER,
             allowNull: true,
+            defaultValue: 0,
             validate: {
                 min: 0,
                 max: 1000,
@@ -269,6 +299,7 @@ module.exports = (sequelize, DataTypes) => {
         colors: {
             type: DataTypes.INTEGER,
             allowNull: true,
+            defaultValue: 1,
             validate: {
                 min: 1,
                 max: 7,
@@ -277,6 +308,7 @@ module.exports = (sequelize, DataTypes) => {
         screen: {
             type: DataTypes.INTEGER,
             allowNull: true,
+            defaultValue: 0,
             validate: {
                 min: 0,
                 max: 1000,
@@ -293,6 +325,7 @@ module.exports = (sequelize, DataTypes) => {
         valveP: {
             type: DataTypes.INTEGER,
             allowNull: true,
+            defaultValue: 0,
             validate: {
                 min: 0,
                 max: 1000,
@@ -301,6 +334,7 @@ module.exports = (sequelize, DataTypes) => {
         ValveD: {
             type: DataTypes.INTEGER,
             allowNull: true,
+            defaultValue: 0,
             validate: {
                 min: 0,
                 max: 1000,
@@ -309,6 +343,7 @@ module.exports = (sequelize, DataTypes) => {
         ValveC: {
             type: DataTypes.INTEGER,
             allowNull: true,
+            defaultValue: 0,
             validate: {
                 min: 0,
                 max: 1000,
@@ -318,6 +353,7 @@ module.exports = (sequelize, DataTypes) => {
             // type: DataTypes.ENUM,
             // values: [constants.deviceSettings.bonusMode.CardOnly, constants.deviceSettings.bonusMode.Always],
             type: DataTypes.INTEGER,
+            defaultValue: 0,
             allowNull: true,
             validate: {
                 min: 0,
@@ -328,6 +364,7 @@ module.exports = (sequelize, DataTypes) => {
             // type: DataTypes.ENUM,
             // values: [constants.deviceSettings.pauseMode.Limited, constants.deviceSettings.pauseMode.Unlimited],
             type: DataTypes.INTEGER,
+            defaultValue: 0,
             allowNull: true,
             validate: {
                 min: 0,

@@ -1,5 +1,7 @@
 const CarWashPoint = require('../models').carWashPoint
 const CarWashDevice = require('../models').carWashDevice
+const DeviceSettings = require('../models').deviceSettings
+const Counter = require('../models').counters
 
 const {Op} = require("sequelize");
 
@@ -51,7 +53,12 @@ const addACarWashDevice = async (req, res) => {
             name
         })
 
-        return res.send({success: true, device})
+        let date = new Date().toISOString().replaceAll('-', '');
+
+        const deviceSettings = await DeviceSettings.create({device_id: device.id, dateTime: date, devID: device.id})
+        const deviceCounter = await Counter.create({device_id: device.id})
+
+        return res.send({success: true, device, deviceSettings, deviceCounter})
 
     } catch (e) {
         console.log('something went wrong', e)
