@@ -74,7 +74,7 @@ const updateCounters = async (req, res) => {
         counter.chTimeFreeModeD = counters[0]?.chTimeFreeMode[0]?.d;
         counter.powerOnTime = counters[0]?.powerOnTime
 
-        // await counter.save()
+        await counter.save()
 
         return res.json({counter})
         // return res.send({success: true})
@@ -291,7 +291,7 @@ const sendBasicSettings = async (req, res) => {
         if (settings[0]?.schedule?.bPct) device.set({tBonusPct: settings[0]?.schedule?.bPct})
         if (settings[0]?.schedule?.bVal) device.set({tBonusVal: settings[0]?.schedule?.bVal})
 
-        // await device.save()
+        await device.save()
 
         return res.send({device})
         // return res.send({success: true})
