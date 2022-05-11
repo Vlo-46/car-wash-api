@@ -7,8 +7,8 @@ const constants = require('../utils/constants')
 // const Cryptr = require('cryptr');
 // const cryptr = new Cryptr(process.env.CRYPTR_SECRET_KET);
 
-
 const User = require('../models').users
+const TechnicianUsers = require('../models').technician_users
 const Email = require('../models').emails
 const CarWashPoint = require('../models').carWashPoint
 const CarWashDevice = require('../models').carWashDevice
@@ -282,6 +282,11 @@ const registerUser = async (req, res) => {
             active: true,
         })
             .then((data) => {
+                TechnicianUsers.create({
+                    technician_id: req.user.id,
+                    user_id: data.id
+                })
+
                 res.send({success: true});
             })
             .catch((e) => {
@@ -377,15 +382,24 @@ const getUsers = async (req, res) => {
         if (role === constants.userTypes.USER) return res.status(403).json({success: false})
 
         if (role === constants.userTypes.TECHNICIAN) {
+            let technic = await User.findByPk(id, {
+                include: [
+                    {
+                        model: TechnicianUsers,
+                        as: 'technician_user',
+                        where: {
+                            technician_id: id
+                        }
+                    }
+                ]
+            })
+
             let idOfUsersFromTechnician = []
 
-            let carWashPoints = await CarWashPoint.findAll({
-                where: {technician_id: id}
-            })
-            carWashPoints.forEach(point => idOfUsersFromTechnician.push(point.user_id))
+            technic.technician_user.forEach(user => idOfUsersFromTechnician.push(user.user_id))
 
             users = await User.findAll({
-                attributes: {exclude: ['password', 'token', 'updatedAt']},
+                attributes: {exclude: ['password', 'token', 'role', 'updatedAt']},
                 order: [["id", "DESC"]],
                 where: {
                     id: idOfUsersFromTechnician,

@@ -55,5 +55,11 @@ module.exports = (sequelize, DataTypes) => {
         as: 'technician_points'
     })
 
+    const Technic_users = sequelize.define('Technic_users')
+    User.hasMany(Technic_users, {
+        foreignKey: 'technician_id',
+        as: 'technician_user'
+    })
+
     return User;
 };
