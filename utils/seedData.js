@@ -160,10 +160,26 @@ const counters = [
     }
 ]
 
+const technic_users = [
+    {
+        technician_id: 3,
+        user_id: 2,
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        technician_id: 3,
+        user_id: 2,
+        createdAt: new Date(),
+        updatedAt: new Date()
+    }
+]
+
 module.exports = {
     users,
     carWashPoints,
     carWashDevices,
     deviceSettings,
-    counters
+    counters,
+    technic_users
 }
