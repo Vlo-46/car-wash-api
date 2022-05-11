@@ -4,6 +4,10 @@ const {Op} = require('sequelize')
 const nodemailer = require('nodemailer')
 const constants = require('../utils/constants')
 
+// const Cryptr = require('cryptr');
+// const cryptr = new Cryptr(process.env.CRYPTR_SECRET_KET);
+
+
 const User = require('../models').users
 const Email = require('../models').emails
 const CarWashPoint = require('../models').carWashPoint

@@ -22,7 +22,11 @@ const adminRole = async (req, res, next) => {
             }
             const candidate = await User.findByPk(decoded.id)
             if (!candidate) return res.send({error: 'Something went wrong'})
-            if (candidate.token !== token) return res.send('Your token expired, please sign in again')
+            if (candidate.token !== token) {
+                candidate.set({token: null})
+                await candidate.save();
+                return res.send('Your token expired, please sign in again')
+            }
             req.user = decoded;
             return next();
         })
@@ -48,7 +52,11 @@ const userRole = async (req, res, next) => {
         }
         const candidate = await User.findByPk(decoded.id)
         if (!candidate) return res.send({error: 'Something went wrong'})
-        if (candidate.token !== token) return res.send('Your token expired, please sign in again')
+        if (candidate.token !== token) {
+            candidate.set({token: null})
+            await candidate.save();
+            return res.send('Your token expired, please sign in again')
+        }
         if (!candidate.active) return res.send('You account is deactivated')
         req.user = decoded;
         return next();
@@ -72,7 +80,11 @@ const technicianRole = async (req, res, next) => {
         }
         const candidate = await User.findByPk(decoded.id)
         if (!candidate) return res.send({error: 'Something went wrong'})
-        if (candidate.token !== token) return res.send('Your token expired, please sign in again')
+        if (candidate.token !== token) {
+            candidate.set({token: null})
+            await candidate.save();
+            return res.send('Your token expired, please sign in again')
+        }
         if (!candidate.active) return res.send('You account is deactivated')
         req.user = decoded;
         return next();
@@ -93,7 +105,11 @@ const isAuth = async (req, res, next) => {
         }
         const candidate = await User.findByPk(decoded.id)
         if (!candidate) return res.send({error: 'Something went wrong'})
-        if (candidate.token !== token) return res.send('Your token expired, please sign in again')
+        if (candidate.token !== token) {
+            candidate.set({token: null})
+            await candidate.save();
+            return res.send('Your token expired, please sign in again')
+        }
         if (!candidate.active) return res.send('You account is deactivated')
         req.user = decoded;
         return next();

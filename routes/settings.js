@@ -17,4 +17,6 @@ router.put('/settings/extended', authMiddleware.isAuth, settingsController.sendE
 // discussion for this API  "/settings/basic"
 router.get('/settings/basic-date', authMiddleware.isAuth, settingsController.receiveDateTime)
 
+router.get('/checkStatistics', authMiddleware.userRole, settingsController.checkStatistics)
+
 module.exports = router

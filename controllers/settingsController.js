@@ -470,6 +470,17 @@ const receiveDateTime = async (req, res) => {
     }
 }
 
+const checkStatistics = async (req, res) => {
+    try {
+        const {id} = req.user;
+
+
+        return res.send('check statistics')
+    } catch (e) {
+        console.log('something went wrong', e)
+    }
+}
+
 module.exports = {
     getCommands,
     getCounters,
@@ -481,5 +492,6 @@ module.exports = {
     sendBasicSettings,
     receiveBasicSettings,
     sendExtendedSettings,
-    receiveDateTime
+    receiveDateTime,
+    checkStatistics
 }
