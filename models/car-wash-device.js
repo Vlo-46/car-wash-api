@@ -44,5 +44,10 @@ module.exports = (sequelize, DataTypes) => {
         // onDelete: 'CASCADE'
     })
 
+    const Component = sequelize.define('Component')
+    CarWashDevice.hasMany(Component, {
+        foreignKey: 'device_id'
+    })
+
     return CarWashDevice;
 };

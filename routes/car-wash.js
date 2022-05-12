@@ -12,5 +12,8 @@ router.get('/car-wash/device/:device_id', authMiddleware.isAuth, carWashControll
 router.post('/car-wash/device/create', authMiddleware.technicianRole, carWashController.addACarWashDevice)
 router.post('/car-wash/device/remove', authMiddleware.technicianRole, carWashController.removeTheCarWashDevice)
 router.post('/car-wash/change-name', authMiddleware.userRole, carWashController.changeName)
+router.post('/car-wash/device/components', authMiddleware.technicianRole, carWashController.addComponents)
+router.post('/car-wash/device/components/edit', authMiddleware.technicianRole, carWashController.editComponent)
+router.post('/car-wash/device/components/remove', authMiddleware.technicianRole, carWashController.removeComponent)
 
 module.exports = router;

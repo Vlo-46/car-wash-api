@@ -305,11 +305,50 @@ const technic_users = [
     }
 ]
 
+const components = [
+    {
+        device_id: 1,
+        name: 'Water',
+        value: 1,
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        device_id: 1,
+        name: 'Foam',
+        value: 2,
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        device_id: 2,
+        name: 'Water',
+        value: 1,
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        device_id: 2,
+        name: 'Foam',
+        value: 2,
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        device_id: 3,
+        name: 'Water',
+        value: 1,
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+]
+
 module.exports = {
     users,
     carWashPoints,
     carWashDevices,
     deviceSettings,
     counters,
-    technic_users
+    technic_users,
+    components
 }

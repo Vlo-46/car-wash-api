@@ -2,6 +2,7 @@ const CarWashPoint = require('../models').carWashPoint
 const CarWashDevice = require('../models').carWashDevice
 const DeviceSettings = require('../models').deviceSettings
 const Counter = require('../models').counters
+const Component = require('../models').components
 
 const {Op} = require("sequelize");
 
@@ -54,9 +55,9 @@ const getSingleCarWashPoint = async (req, res) => {
     try {
         const {point_id} = req.params;
 
-        const points = await CarWashPoint.findByPk(point_id)
+        const point = await CarWashPoint.findByPk(point_id)
 
-        return res.send(points)
+        return res.send(point)
     } catch (e) {
         console.log('something went wrong', e)
     }
@@ -116,7 +117,7 @@ const getSingleDevice = async (req, res) => {
         const {device_id} = req.params
         const device = await CarWashDevice.findByPk(device_id, {
             include: [
-                DeviceSettings, Counter
+                DeviceSettings, Counter, Component
             ]
         })
 
@@ -170,6 +171,105 @@ const removeTheCarWashDevice = async (req, res) => {
     }
 }
 
+const addComponents = async (req, res) => {
+    try {
+        const {device_id, name, value} = req.body;
+        const {id} = req.user;
+
+        const device = await CarWashDevice.findOne({
+            where: {
+                technician_id: id
+            }
+        })
+
+        if (!device) return res.send({success: false})
+
+        const existComponent = await Component.findOne({
+            where: {
+                device_id,
+                [Op.or]: [
+                    {value: {$iLike: value}},
+                    {name}
+                ]
+            }
+        })
+
+        if (existComponent) return res.send({success: false, msg: 'There is already a component with this value'})
+
+        const component = await Component.create({
+            device_id,
+            name,
+            value
+        })
+
+        return res.send(component)
+    } catch (e) {
+        console.log('something went wrong', e)
+    }
+}
+
+const editComponent = async (req, res) => {
+    try {
+        const {id, device_id, value, name} = req.body;
+
+        const component = await Component.findByPk(id, {
+            where: {device_id}
+        })
+
+        if (!component) return res.send({success: false})
+
+        const existComponent = await Component.findOne({
+            where: {
+                device_id,
+                [Op.or]: [
+                    {value: {$iLike: value}},
+                    {name}
+                ]
+            }
+        })
+
+        if (existComponent) return res.send({success: false, msg: 'There is already a component with this value'})
+
+        component.set({value})
+        component.set({name})
+
+        await component.save()
+
+        return res.send({success: true, component})
+
+    } catch (e) {
+        console.log('something went wrong', e)
+    }
+}
+
+const removeComponent = async (req, res) => {
+    try {
+        const {component_id, device_id} = req.body;
+        const {id} = req.user;
+
+        const device = await CarWashDevice.findOne({
+            where: {
+                [Op.and]: [
+                    {technician_id: id},
+                    {id: device_id}
+                ]
+            }
+        })
+
+        if (!device) return res.send({success: false})
+
+        const component = await Component.findByPk(component_id)
+
+        await component.destroy()
+
+        return res.send({success: true})
+
+
+    } catch (e) {
+        console.log('something went wrong', e)
+    }
+}
+
 module.exports = {
     addACarWash,
     removeTheCarWash,
@@ -179,5 +279,8 @@ module.exports = {
     getCarWash,
     getCarWashDevices,
     getSingleCarWashPoint,
-    getSingleDevice
+    getSingleDevice,
+    addComponents,
+    editComponent,
+    removeComponent
 }

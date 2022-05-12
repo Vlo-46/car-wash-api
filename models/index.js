@@ -41,5 +41,6 @@ db.carWashDevice  = require('./car-wash-device')(sequelize, Sequelize)
 db.deviceSettings = require('./device-settings')(sequelize, Sequelize)
 db.counters = require('./counter')(sequelize, Sequelize)
 db.technician_users = require('./technic_users')(sequelize, Sequelize)
+db.components = require('./component')(sequelize, Sequelize)
 
 module.exports = db;
