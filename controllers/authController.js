@@ -150,6 +150,8 @@ const changePassword = async (req, res) => {
         const hashPassword = await bcrypt.hash(newPassword, 10)
 
         candidate.set({password: hashPassword})
+        candidate.set({firstLogin: true})
+
         await candidate.save()
 
         return res.send({success: true})
@@ -245,6 +247,7 @@ const forgotPassword = async (req, res) => {
 
         if (!candidate) return res.send({success: false, msg: 'user not found'})
         candidate.set({password: hashPassword})
+        candidate.set({firstLogin: true})
 
         await candidate.save()
         await isValid.destroy();
