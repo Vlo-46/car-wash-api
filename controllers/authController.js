@@ -158,6 +158,27 @@ const changePassword = async (req, res) => {
     }
 }
 
+const changeTechnicianPassword = async (req, res) => {
+    try {
+        const {id, password} = req.body;
+
+        const candidate = await User.findByPk(id)
+
+        if (!candidate) return res.send({success: false})
+        if (candidate.role !== constants.userTypes.TECHNICIAN) return res.send({success: false})
+
+        const hashPassword = await bcrypt.hash(password, 10)
+
+        candidate.set({password: hashPassword})
+        await candidate.save()
+
+        return res.send({success: true})
+
+    } catch (e) {
+        console.log('something went wrong', e)
+    }
+}
+
 const forgotPasswordSendEmail = async (req, res) => {
     try {
         const {email} = req.body;
@@ -435,6 +456,7 @@ module.exports = {
     logout,
     addEmail,
     changePassword,
+    changeTechnicianPassword,
     forgotPasswordSendEmail,
     confirmTheCodeSentByEmail,
     forgotPassword,

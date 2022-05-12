@@ -416,7 +416,7 @@ const sendExtendedSettings = async (req, res) => {
         if (!device) return res.send({success: false})
 
         if (configs[0]?.mode) device.set({mode: configs[0]?.mode})
-        // bpEn ?
+        // bpEn ? bypasenable
         if (configs[0]?.bpTime) device.set({bpTime: configs[0].bpTime})
         if (configs[0]?.bpCh) device.set({bypassChann: configs[0].bpCh[0]}) // discussion, bypassChann is array
         if (configs[0]?.service) device.set({service: configs[0].service})
@@ -430,14 +430,14 @@ const sendExtendedSettings = async (req, res) => {
         if (configs[0]?.currency) device.set({currency: configs[0]?.currency})
         if (configs[0]?.dColor) device.set({digColor: configs[0]?.dColor})
         if (configs[0]?.color) device.set({colors: configs[0]?.color[0]}) // discussion, colors is array
-        // component ?, and component is array
+        // component ?, and component is array,, ...name
         if (configs[0]?.screen) device.set({screen: configs[0]?.screen[0]}) // discussion, screen is array
         if (configs[0]?.bonusMode) device.set({bonusMode: configs[0]?.bonusMode})
         if (configs[0]?.pauseMode) device.set({pauseMode: configs[0]?.pauseMode})
         if (configs[0]?.hpt) device.set({hpt: configs[0]?.hpt})
         if (configs[0]?.flowSensor[0]['pulse']) device.set({flowPulse1: configs[0]?.flowSensor[0]['pulse']}) // discussion, flowSensor is array, (flowPulse1, flowPulse2)
         if (configs[0]?.flowSensor[0]['timeout']) device.set({flowTimeout1: configs[0]?.flowSensor[0]['timeout']}) // discussion, flowSensor is array, (flowTimeout1, flowTimeout2)
-        // relayOutput ?, and relayOutput is array
+        // relayOutput ?, and relayOutput is array  tables , orinak jur - channels 1234
 
         await device.save()
 

@@ -33,6 +33,10 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         allowNull: false
       },
+      firstLogin: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+      },
       token: {
         type: Sequelize.STRING,
         allowNull: true,

@@ -14,8 +14,7 @@ router.put('/settings/basic', authMiddleware.isAuth, settingsController.sendBasi
 router.get('/settings/basic', authMiddleware.isAuth, settingsController.receiveBasicSettings)
 router.put('/settings/extended', authMiddleware.isAuth, settingsController.sendExtendedSettings)
 
-// discussion for this API  "/settings/basic"
-router.get('/settings/basic-date', authMiddleware.isAuth, settingsController.receiveDateTime)
+router.get('/settings/date', authMiddleware.isAuth, settingsController.receiveDateTime)
 
 router.get('/checkStatistics', authMiddleware.userRole, settingsController.checkStatistics)
 

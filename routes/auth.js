@@ -12,6 +12,7 @@ router.get('/auth/me', authMiddleware.isAuth, authController.getAuth)
 router.post('/email', authMiddleware.isAuth, authController.addEmail)
 router.post('/change-password', authMiddleware.isAuth, authController.changePassword)
 
+
 // forgot password by steps
 router.post('/forgot-password/email', authController.forgotPasswordSendEmail)
 router.post('/forgot-password/confirm-code', authController.confirmTheCodeSentByEmail)
@@ -22,6 +23,8 @@ router.post('/forgot-password/change', authController.forgotPassword)
 router.post('/technician/create', authMiddleware.adminRole, authController.registerTechnician)
 router.post('/technician/deactivate', authMiddleware.adminRole, authController.deactivateTechnicianAccount)
 router.post('/technician/activate', authMiddleware.adminRole, authController.activateTechnicianAccount)
+router.post('/technician/change-password', authMiddleware.adminRole, authController.changeTechnicianPassword)
+
 
 // technician routes
 
