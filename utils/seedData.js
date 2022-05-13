@@ -343,6 +343,214 @@ const components = [
     },
 ]
 
+const totalComponents = [
+    {
+        name: "Пауза",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Вода",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Пена",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Воск",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Пылесос",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Горячая вода",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Теплая вода",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Вода без давления",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Дистиллированная вода",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Вода талина",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Пена под давлением",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Турбо пена",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Воздух",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Осмос",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Блеск шин",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Подкачка шин",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Жидкость двигателя",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Щетка",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Ополаскивание",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Уход салона",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Жидкость стекол",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Освещение",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Хоппер",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Клапан",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Уход стекол",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Омывайка",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Турбо сушка",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Озон",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Химия кожа",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Химия ткань",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Пар плюс пылесос",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Антимошка",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Умка",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Актив SPA",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Шампунь",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Химчистка",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Обдув",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Чернение шин",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Полироль",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Торнадо",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: "Вода для рук",
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+]
+
 module.exports = {
     users,
     carWashPoints,
@@ -350,5 +558,6 @@ module.exports = {
     deviceSettings,
     counters,
     technic_users,
-    components
+    components,
+    totalComponents
 }

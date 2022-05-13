@@ -13,9 +13,13 @@ router.put('/flags/disabled', authMiddleware.isAuth, settingsController.deviceDi
 router.put('/settings/basic', authMiddleware.isAuth, settingsController.sendBasicSettings)
 router.get('/settings/basic', authMiddleware.isAuth, settingsController.receiveBasicSettings)
 router.put('/settings/extended', authMiddleware.isAuth, settingsController.sendExtendedSettings)
-
 router.get('/settings/date', authMiddleware.isAuth, settingsController.receiveDateTime)
 
 router.get('/checkStatistics', authMiddleware.userRole, settingsController.checkStatistics)
+
+router.get('/total-components', authMiddleware.isAuth, settingsController.getTotalComponents)
+router.post('/total-component', authMiddleware.adminRole, settingsController.addComponentToTotal)
+router.post('/total-component/edit', authMiddleware.adminRole, settingsController.editComponentFromTotal)
+router.post('/total-component/remove', authMiddleware.adminRole, settingsController.removeComponentFromTotal)
 
 module.exports = router

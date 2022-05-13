@@ -433,7 +433,10 @@ const getUsers = async (req, res) => {
         } else if (role === constants.userTypes.ADMIN) {
             users = await User.findAll({
                 attributes: {exclude: ['password', 'token', 'updatedAt']},
-                order: [["id", "DESC"]],
+                // group: "role",
+                order: [
+                    ["id", "DESC"],
+                ],
                 where: {
                     [Op.not]: [{id}]
                 }

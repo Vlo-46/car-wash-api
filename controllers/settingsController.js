@@ -2,15 +2,35 @@ const DeviceSettings = require('../models').deviceSettings
 const CarWashPoint = require('../models').carWashPoint
 const CarWashDevice = require('../models').carWashDevice
 const Counter = require('../models').counters
+const TotalComponent = require('../models').total_components
 
 const constants = require('../utils/constants')
+
+const http = require("http");
 
 const getCommands = async (req, res) => {
     try {
         const {id} = req.query;
 
-        return res.send({id})
-        // return res.send({command: 0})
+        let keepAliveAgent = new http.Agent({
+            keepAlive: true
+        });
+
+        const requestOptions = {
+            agent: keepAliveAgent,
+            host: 'localhost',
+            port: '5000',
+            headers: {
+                Connection: 'keep-alive'
+            }
+            // the rest of your options...
+        }
+
+        const request = http.request(requestOptions, (response) => {
+            // handle response here
+        });
+
+        return res.send({request})
     } catch (e) {
         console.log('something went wrong', e)
     }
@@ -481,6 +501,68 @@ const checkStatistics = async (req, res) => {
     }
 }
 
+const getTotalComponents = async (req, res) => {
+    try {
+        const {role} = req.user;
+
+        if (role === constants.userTypes.USER) return res.status(403).send({success: false})
+
+        const totalComponents = await TotalComponent.findAll()
+
+        return res.send(totalComponents)
+
+    } catch (e) {
+        console.log('something went wrong', e)
+    }
+}
+
+const addComponentToTotal = async (req, res) => {
+    try {
+        const {name} = req.body;
+
+        const component = await TotalComponent.create({name})
+
+        return res.send({success: true, component})
+    } catch (e) {
+        console.log('something went wrong', e)
+    }
+}
+
+const editComponentFromTotal = async (req, res) => {
+    try {
+        const {id, name} = req.body;
+
+        const component = await TotalComponent.findByPk(id)
+
+        if (!component) return res.send({success: false, msg: "Not found"})
+
+        component.name = name;
+        await component.save()
+
+        return res.send({success: true, component})
+
+    } catch (e) {
+        console.log('something went wrong', e)
+    }
+}
+
+const removeComponentFromTotal = async (req, res) => {
+    try {
+        const {id} = req.body;
+
+        const component = await TotalComponent.findByPk(id)
+
+        if (!component) return res.send({success: false, msg: "Not found"})
+
+        await component.destroy()
+
+        return res.send({success: true})
+
+    } catch (e) {
+        console.log('something went wrong', e)
+    }
+}
+
 module.exports = {
     getCommands,
     getCounters,
@@ -493,5 +575,9 @@ module.exports = {
     receiveBasicSettings,
     sendExtendedSettings,
     receiveDateTime,
-    checkStatistics
+    checkStatistics,
+    getTotalComponents,
+    addComponentToTotal,
+    editComponentFromTotal,
+    removeComponentFromTotal
 }
