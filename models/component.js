@@ -1,6 +1,5 @@
 'use strict';
 const {Model} = require('sequelize');
-const constants = require('../utils/constants')
 
 module.exports = (sequelize, DataTypes) => {
     class Component extends Model {
@@ -30,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
     const CarWashDevices = sequelize.define('CarWashDevices')
     Component.belongsTo(CarWashDevices, {
         foreignKey: 'id',
-        // onDelete: 'CASCADE'
+        onDelete: 'cascade'
     })
 
     return Component;

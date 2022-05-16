@@ -12,6 +12,10 @@ const getCommands = async (req, res) => {
     try {
         const {id} = req.query;
 
+        const devices = await CarWashDevice.findAll({
+            where: {id: JSON.parse(id)}
+        })
+
         let keepAliveAgent = new http.Agent({
             keepAlive: true
         });
@@ -23,14 +27,13 @@ const getCommands = async (req, res) => {
             headers: {
                 Connection: 'keep-alive'
             }
-            // the rest of your options...
         }
 
         const request = http.request(requestOptions, (response) => {
             // handle response here
         });
 
-        return res.send({request})
+        return res.send({devices, request})
     } catch (e) {
         console.log('something went wrong', e)
     }
@@ -73,31 +76,133 @@ const updateCounters = async (req, res) => {
     try {
         const {counters} = req.body;
 
-        const counter = await Counter.findByPk(counters[0].id)
-        if (!counter) return res.send({success: false})
+        const data = {
+            "counters": [
+                {
+                    "id": 1,
+                    "coin": {
+                        "t": 0,
+                        "d": 0
+                    },
+                    "bill": {
+                        "t": 0,
+                        "d": 0
+                    },
+                    "cashless": {
+                        "t": 0,
+                        "d": 0
+                    },
+                    "bonus": {
+                        "t": 0,
+                        "d": 0
+                    },
+                    "service": {
+                        "t": 0,
+                        "d": 0
+                    },
+                    "chSpent": [
+                        {
+                            "t": 0,
+                            "d": 0
+                        }
+                    ],
+                    "chTimePaidMode": [
+                        {
+                            "t": 0,
+                            "d": 0
+                        }
+                    ],
+                    "chTimeFreeMode": [
+                        {
+                            "t": 0,
+                            "d": 0
+                        }
+                    ],
+                    "powerOnTime": 0
+                },
+                {
+                    "id": 2,
+                    "coin": {
+                        "t": 0,
+                        "d": 0
+                    },
+                    "bill": {
+                        "t": 0,
+                        "d": 0
+                    },
+                    "cashless": {
+                        "t": 0,
+                        "d": 0
+                    },
+                    "bonus": {
+                        "t": 0,
+                        "d": 0
+                    },
+                    "service": {
+                        "t": 0,
+                        "d": 0
+                    },
+                    "chSpent": [
+                        {
+                            "t": 0,
+                            "d": 0
+                        }
+                    ],
+                    "chTimePaidMode": [
+                        {
+                            "t": 0,
+                            "d": 0
+                        }
+                    ],
+                    "chTimeFreeMode": [
+                        {
+                            "t": 0,
+                            "d": 0
+                        }
+                    ],
+                    "powerOnTime": 0
+                }
+            ]
+        }
 
-        counter.coinT = counters[0]?.coin?.t;
-        counter.coinD = counters[0]?.coin?.d;
-        counter.billT = counters[0]?.bill?.t;
-        counter.billD = counters[0]?.bill?.d;
-        counter.cashlessT = counters[0]?.cashless?.t;
-        counter.cashlessD = counters[0]?.cashless?.d;
-        counter.bonusT = counters[0]?.bonus?.t;
-        counter.bonusD = counters[0]?.bonus?.d;
-        counter.serviceT = counters[0]?.service?.t;
-        counter.serviceD = counters[0]?.service?.d;
-        counter.chSpentT = counters[0]?.chSpent[0]?.t;
-        counter.chSpentD = counters[0]?.chSpent[0]?.d;
-        counter.chTimePaidModeT = counters[0]?.chTimePaidMode[0]?.t;
-        counter.chTimePaidModeD = counters[0]?.chTimePaidMode[0]?.d;
-        counter.chTimeFreeModeT = counters[0]?.chTimeFreeMode[0]?.t;
-        counter.chTimeFreeModeD = counters[0]?.chTimeFreeMode[0]?.d;
-        counter.powerOnTime = counters[0]?.powerOnTime
+        let counterIds = []
 
-        await counter.save()
+        counters.forEach(c => counterIds.push(c.id))
 
-        return res.json({counter})
-        // return res.send({success: true})
+        await Counter.findAll({
+            where: {id: counterIds}
+        }).then(async result => {
+            for (let j = 0; j < counterIds.length; j++) {
+                let counter = result.find(item => item.id === counterIds[j])
+                let request = counters.find(item => item.id === counterIds[j])
+
+                if (!counter) return res.send({success: false})
+
+                counter.coinT = request?.coin?.t;
+                counter.coinD = request?.coin?.d;
+                counter.billT = request?.bill?.t;
+                counter.billD = request?.bill?.d;
+                counter.cashlessT = request?.cashless?.t;
+                counter.cashlessD = request?.cashless?.d;
+                counter.bonusT = request?.bonus?.t;
+                counter.bonusD = request?.bonus?.d;
+                counter.serviceT = request?.service?.t;
+                counter.serviceD = request?.service?.d;
+                counter.chSpentT = request?.chSpent[0]?.t;
+                counter.chSpentD = request?.chSpent[0]?.d;
+                counter.chTimePaidModeT = request?.chTimePaidMode[0]?.t;
+                counter.chTimePaidModeD = request?.chTimePaidMode[0]?.d;
+                counter.chTimeFreeModeT = request?.chTimeFreeMode[0]?.t;
+                counter.chTimeFreeModeD = request?.chTimeFreeMode[0]?.d;
+                counter.powerOnTime = request?.powerOnTime
+
+                await counter.save()
+            }
+        }).catch(e => {
+            console.log(e)
+            return res.send({success: false})
+        })
+        return res.send({success: true})
     } catch (e) {
         console.log('something went wrong', e)
     }
@@ -121,33 +226,34 @@ const confirmCountersReset = async (req, res) => {
             where: {id}
         })
             .then(async result => {
-                let request = id.find(i => i === result?.filter(r => r.id === i)[0].id)
-                let counter = result.find(item => item.id === request)
+                for (let j = 0; j < id.length; j++) {
+                    let counter = result.find(item => item.id === id[j])
 
-                if (!counter) return res.send({success: false})
+                    if (!counter) return res.send({success: false})
 
-                // counter.coinT = 0
-                counter.coinD = 0
-                // counter.billT = 0
-                counter.billD = 0
-                // counter.cashlessT = 0
-                counter.cashlessD = 0
-                // counter.bonusT = 0
-                counter.bonusD = 0
-                // counter.serviceT = 0
-                counter.serviceD = 0
-                counter.chSpent = "{t: 0, d: 0}"
-                counter.chTimePaidMode = "{t: 0, d: 0}"
-                counter.chTimeFreeMode = "{t: 0, d: 0}"
-                counter.powerOnTime = 0
+                    // counter.coinT = 0
+                    counter.coinD = 0
+                    // counter.billT = 0
+                    counter.billD = 0
+                    // counter.cashlessT = 0
+                    counter.cashlessD = 0
+                    // counter.bonusT = 0
+                    counter.bonusD = 0
+                    // counter.serviceT = 0
+                    counter.serviceD = 0
+                    counter.chSpent = "{t: 0, d: 0}"
+                    counter.chTimePaidMode = "{t: 0, d: 0}"
+                    counter.chTimeFreeMode = "{t: 0, d: 0}"
+                    counter.powerOnTime = 0
 
-                await counter.save()
-
+                    await counter.save()
+                }
                 return res.send({success: true})
             })
             .catch(e => {
                 return res.send({success: false})
             })
+
     } catch (e) {
         console.log('something went wrong', e)
     }
@@ -297,6 +403,7 @@ const sendBasicSettings = async (req, res) => {
         if (!device) return res.send({success: false})
 
         // tariff ?, and tariff is array
+        if (settings[0]?.tariff) device.set({tariffPct: settings[0]?.tariff})
         if (settings[0]?.coinNom) device.set({coinNominal: settings[0]?.coinNom})
         if (settings[0]?.billNom) device.set({billNominal: settings[0]?.billNom})
         if (settings[0]?.bonusP) device.set({bonusPct: settings[0]?.bonusP})
@@ -346,7 +453,7 @@ const receiveBasicSettings = async (req, res) => {
         devices.forEach(dev => {
             const data = {}
             data.id = dev.device_id;
-            data.tariff = [0] // discussion
+            data.tariff = dev.tariffPct // discussion
             data.coinNom = dev.coinNominal;
             data.billNom = dev.billNominal;
             data.bonusP = dev.bonusPct;
@@ -437,6 +544,7 @@ const sendExtendedSettings = async (req, res) => {
 
         if (configs[0]?.mode) device.set({mode: configs[0]?.mode})
         // bpEn ? bypasenable
+        if (configs[0]?.bpEn) device.set({bypass: configs[0]?.bpEn})
         if (configs[0]?.bpTime) device.set({bpTime: configs[0].bpTime})
         if (configs[0]?.bpCh) device.set({bypassChann: configs[0].bpCh[0]}) // discussion, bypassChann is array
         if (configs[0]?.service) device.set({service: configs[0].service})
@@ -485,17 +593,6 @@ const receiveDateTime = async (req, res) => {
         }
 
         return res.send(data)
-    } catch (e) {
-        console.log('something went wrong', e)
-    }
-}
-
-const checkStatistics = async (req, res) => {
-    try {
-        const {id} = req.user;
-
-
-        return res.send('check statistics')
     } catch (e) {
         console.log('something went wrong', e)
     }
@@ -558,6 +655,17 @@ const removeComponentFromTotal = async (req, res) => {
 
         return res.send({success: true})
 
+    } catch (e) {
+        console.log('something went wrong', e)
+    }
+}
+
+const checkStatistics = async (req, res) => {
+    try {
+        const {id} = req.user;
+
+
+        return res.send('check statistics')
     } catch (e) {
         console.log('something went wrong', e)
     }

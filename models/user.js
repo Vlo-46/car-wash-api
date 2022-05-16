@@ -51,18 +51,21 @@ module.exports = (sequelize, DataTypes) => {
 
     User.hasMany(CarWashPoints, {
         foreignKey: 'user_id',
-        as: 'user_points'
+        as: 'user_points',
+        onDelete: 'cascade'
     })
 
     User.hasMany(CarWashPoints, {
         foreignKey: 'technician_id',
-        as: 'technician_points'
+        as: 'technician_points',
+        onDelete: 'cascade'
     })
 
     const Technic_users = sequelize.define('Technic_users')
     User.hasMany(Technic_users, {
         foreignKey: 'technician_id',
-        as: 'technician_user'
+        as: 'technician_user',
+        onDelete: 'cascade'
     })
 
     return User;

@@ -1,7 +1,6 @@
 'use strict';
-const {
-    Model
-} = require('sequelize');
+const {Model} = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
     class Technic_users extends Model {
         /**
@@ -24,7 +23,8 @@ module.exports = (sequelize, DataTypes) => {
 
     const User = sequelize.define('User')
     Technic_users.belongsTo(User, {
-        foreignKey: 'id'
+        foreignKey: 'id',
+        onDelete: 'cascade'
     })
 
     return Technic_users;

@@ -97,13 +97,13 @@ module.exports = (sequelize, DataTypes) => {
     const DeviceSettings = sequelize.define('DeviceSettings')
     Counter.belongsTo(DeviceSettings, {
         foreignKey: 'id',
-        // onDelete: 'CASCADE'
+        onDelete: 'cascade'
     })
 
     const CarWashDevices = sequelize.define('CarWashDevices')
     Counter.belongsTo(CarWashDevices, {
         foreignKey: 'id',
-        // onDelete: 'CASCADE'
+        onDelete: 'cascade'
     })
 
     return Counter;

@@ -29,11 +29,13 @@ module.exports = (sequelize, DataTypes) => {
     const User = sequelize.define('User')
     CarWashPoints.belongsTo(User, {
         foreignKey: 'id',
+        onDelete: 'cascade'
     })
 
     const CarWashDevice = sequelize.define('CarWashDevices')
     CarWashPoints.hasMany(CarWashDevice, {
-        foreignKey: 'car_wash_point_id'
+        foreignKey: 'car_wash_point_id',
+        onDelete: 'cascade'
     })
 
     return CarWashPoints;

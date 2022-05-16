@@ -1,6 +1,5 @@
 'use strict';
 const {Model} = require('sequelize');
-const constants = require('../utils/constants')
 
 module.exports = (sequelize, DataTypes) => {
     class TotalComponent extends Model {

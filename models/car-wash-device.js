@@ -29,24 +29,26 @@ module.exports = (sequelize, DataTypes) => {
     const CarWashPoints = sequelize.define('CarWashPoints')
     CarWashDevice.belongsTo(CarWashPoints, {
         // foreignKey: 'car_wash_device_id'
-        foreignKey: 'id'
+        foreignKey: 'id',
+        onDelete: 'cascade'
     })
 
     const DeviceSettings = sequelize.define('DeviceSettings')
     CarWashDevice.hasOne(DeviceSettings, {
         foreignKey: 'device_id',
-        // onDelete: 'CASCADE'
+        onDelete: 'cascade'
     })
 
     const Counter = sequelize.define('Counter')
     CarWashDevice.hasOne(Counter, {
         foreignKey: 'device_id',
-        // onDelete: 'CASCADE'
+        onDelete: 'cascade'
     })
 
     const Component = sequelize.define('Component')
     CarWashDevice.hasMany(Component, {
-        foreignKey: 'device_id'
+        foreignKey: 'device_id',
+        onDelete: 'cascade'
     })
 
     return CarWashDevice;
