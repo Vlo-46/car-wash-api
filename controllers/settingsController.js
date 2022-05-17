@@ -384,9 +384,9 @@ const sendBasicSettings = async (req, res) => {
         const data = {
             "settings": [
                 {
-                    "id": 0,
+                    "id": 1,
                     "tariff": [
-                        0
+                        1, 2, 3
                     ],
                     "coinNom": 0,
                     "billNom": 0,
@@ -403,33 +403,64 @@ const sendBasicSettings = async (req, res) => {
                         "bPct": 0,
                         "bVal": 0
                     }
-                }
+                },
+                {
+                    "id": 2,
+                    "tariff": [
+                        1, 2, 3
+                    ],
+                    "coinNom": 0,
+                    "billNom": 0,
+                    "bonusP": 0,
+                    "bonusV": 0,
+                    "bingoT": 0,
+                    "bingoV": 0,
+                    "schedule": {
+                        "tStart": "12:00",
+                        "tEnd": "12:00",
+                        "tPct": 0,
+                        "bStart": "12:00",
+                        "bEnd": "12:00",
+                        "bPct": 0,
+                        "bVal": 0
+                    }
+                },
             ]
         }
 
-        const device = await DeviceSettings.findByPk(settings[0].id)
-        if (!device) return res.send({success: false})
+        const deviceIds = []
 
-        // tariff ?, and tariff is array
-        if (settings[0]?.tariff) device.set({tariffPct: settings[0]?.tariff})
-        if (settings[0]?.coinNom) device.set({coinNominal: settings[0]?.coinNom})
-        if (settings[0]?.billNom) device.set({billNominal: settings[0]?.billNom})
-        if (settings[0]?.bonusP) device.set({bonusPct: settings[0]?.bonusP})
-        if (settings[0]?.bonusV) device.set({bonusVal: settings[0]?.bonusV})
-        if (settings[0]?.bingoT) device.set({bingoThr: settings[0]?.bingoT})
-        if (settings[0]?.bingoV) device.set({bingoVal: settings[0]?.bingoV})
-        if (settings[0]?.schedule?.tStart) device.set({tariffSchStart: settings[0]?.schedule?.tStart})
-        if (settings[0]?.schedule?.tEnd) device.set({tariffSchEnd: settings[0]?.schedule?.tEnd})
-        if (settings[0]?.schedule?.tPct) device.set({tariffPct: settings[0]?.schedule?.tPct})
-        if (settings[0]?.schedule?.bStart) device.set({bonusSchStart: settings[0]?.schedule?.bStart})
-        if (settings[0]?.schedule?.bEnd) device.set({bonusSchEnd: settings[0]?.schedule?.bEnd})
-        if (settings[0]?.schedule?.bPct) device.set({tBonusPct: settings[0]?.schedule?.bPct})
-        if (settings[0]?.schedule?.bVal) device.set({tBonusVal: settings[0]?.schedule?.bVal})
+        settings.forEach(item => deviceIds.push(item.id))
 
-        await device.save()
+        await DeviceSettings.findAll({
+            where: {id: deviceIds}
+        }).then(async result => {
+            for (let j = 0; j < deviceIds.length; j++) {
+                const deviceSetting = result.find(item => item.id === deviceIds[j])
+                if (!deviceSetting) return res.send({success: false})
 
-        return res.send({device})
-        // return res.send({success: true})
+                const request = settings.find(item => item.id === deviceIds[j])
+
+                if (request?.tariff) deviceSetting.set({tariffPct: JSON.stringify(request?.tariff)})
+                if (request?.coinNom) deviceSetting.set({coinNominal: request?.coinNom})
+                if (request?.billNom) deviceSetting.set({billNominal: request?.billNom})
+                if (request?.bonusP) deviceSetting.set({bonusPct: request?.bonusP})
+                if (request?.bonusV) deviceSetting.set({bonusVal: request?.bonusV})
+                if (request?.bingoT) deviceSetting.set({bingoThr: request?.bingoT})
+                if (request?.bingoV) deviceSetting.set({bingoVal: request?.bingoV})
+                if (request?.schedule?.tStart) deviceSetting.set({tariffSchStart: request?.schedule?.tStart})
+                if (request?.schedule?.tEnd) deviceSetting.set({tariffSchEnd: request?.schedule?.tEnd})
+                if (request?.schedule?.tPct) deviceSetting.set({tariffPct: request?.schedule?.tPct})
+                if (request?.schedule?.bStart) deviceSetting.set({bonusSchStart: request?.schedule?.bStart})
+                if (request?.schedule?.bEnd) deviceSetting.set({bonusSchEnd: request?.schedule?.bEnd})
+                if (request?.schedule?.bPct) deviceSetting.set({tBonusPct: request?.schedule?.bPct})
+                if (request?.schedule?.bVal) deviceSetting.set({tBonusVal: request?.schedule?.bVal})
+
+                await deviceSetting.save()
+            }
+        }).catch(e => res.send({success: false, error: e}))
+
+        return res.send({success: true})
     } catch (e) {
         console.log('something went wrong', e)
     }
@@ -461,7 +492,7 @@ const receiveBasicSettings = async (req, res) => {
         devices.forEach(dev => {
             const data = {}
             data.id = dev.device_id;
-            data.tariff = dev.tariffPct // discussion
+            data.tariff = JSON.parse(dev.tariffPct) // discussion
             data.coinNom = dev.coinNominal;
             data.billNom = dev.billNominal;
             data.bonusP = dev.bonusPct;
@@ -471,7 +502,7 @@ const receiveBasicSettings = async (req, res) => {
             data.schedule = {
                 tStart: dev.tariffSchStart,
                 tEnd: dev.tariffSchEnd,
-                tPct: dev.tariffPct,
+                tPct: JSON.parse(dev.tariffPct),
                 bStart: dev.bonusSchStart,
                 bEnd: dev.bonusSchEnd,
                 bPct: dev.tBonusPct,
@@ -520,13 +551,13 @@ const sendExtendedSettings = async (req, res) => {
                     "currency": 3,
                     "dColor": 4,
                     "color": [
-                        5
+                        4, 5, 6
                     ],
                     "component": [
-                        0
+                        5, 6, 7, 8
                     ],
                     "screen": [
-                        300
+                        100, 200, 300
                     ],
                     "bonusMode": 0,
                     "pauseMode": 0,
@@ -542,43 +573,100 @@ const sendExtendedSettings = async (req, res) => {
                             0
                         ]
                     ]
-                }
+                },
+                {
+                    "id": 2,
+                    "mode": 1,
+                    "bpEn": 0,
+                    "bpTime": 120,
+                    "bpCh": [
+                        1, 2
+                    ],
+                    "service": 2500,
+                    "hopper": {
+                        "enabled": 0,
+                        "nominal": 2600,
+                        "threshold": 3500
+                    },
+                    "valve": {
+                        "period": 150,
+                        "duration": 250,
+                        "count": 350
+                    },
+                    "language": 1,
+                    "currency": 3,
+                    "dColor": 4,
+                    "color": [
+                        1, 2, 3
+                    ],
+                    "component": [
+                        1, 2, 3, 4
+                    ],
+                    "screen": [
+                        300, 400, 500
+                    ],
+                    "bonusMode": 0,
+                    "pauseMode": 0,
+                    "hpt": 0,
+                    "flowSensor": [
+                        {
+                            "pulse": 5000,
+                            "timeout": 6000
+                        }
+                    ],
+                    "relayOutput": [
+                        [
+                            0
+                        ]
+                    ]
+                },
             ]
         }
 
-        const device = await DeviceSettings.findByPk(configs[0].id)
+        const deviceIds = []
 
-        if (!device) return res.send({success: false})
+        configs.forEach(item => deviceIds.push(item.id))
 
-        if (configs[0]?.mode) device.set({mode: configs[0]?.mode})
-        // bpEn ? bypasenable
-        if (configs[0]?.bpEn) device.set({bypass: configs[0]?.bpEn})
-        if (configs[0]?.bpTime) device.set({bpTime: configs[0].bpTime})
-        if (configs[0]?.bpCh) device.set({bypassChann: configs[0].bpCh[0]}) // discussion, bypassChann is array
-        if (configs[0]?.service) device.set({service: configs[0].service})
-        if (configs[0]?.hopper?.enabled) device.set({hopper: configs[0].hopper.enabled})
-        if (configs[0]?.hopper?.nominal) device.set({hopperNominal: configs[0].hopper.nominal})
-        if (configs[0]?.hopper?.threshold) device.set({hopperThreshold: configs[0].hopper.threshold})
-        if (configs[0]?.valve?.period) device.set({valveP: configs[0].valve.period})
-        if (configs[0]?.valve?.duration) device.set({ValveD: configs[0].valve.duration})
-        if (configs[0]?.valve?.count) device.set({ValveC: configs[0].valve.count})
-        if (configs[0]?.language) device.set({language: configs[0]?.language})
-        if (configs[0]?.currency) device.set({currency: configs[0]?.currency})
-        if (configs[0]?.dColor) device.set({digColor: configs[0]?.dColor})
-        if (configs[0]?.color) device.set({colors: configs[0]?.color[0]}) // discussion, colors is array
-        // component ?, and component is array,, ...name
-        if (configs[0]?.screen) device.set({screen: configs[0]?.screen[0]}) // discussion, screen is array
-        if (configs[0]?.bonusMode) device.set({bonusMode: configs[0]?.bonusMode})
-        if (configs[0]?.pauseMode) device.set({pauseMode: configs[0]?.pauseMode})
-        if (configs[0]?.hpt) device.set({hpt: configs[0]?.hpt})
-        if (configs[0]?.flowSensor[0]['pulse']) device.set({flowPulse1: configs[0]?.flowSensor[0]['pulse']}) // discussion, flowSensor is array, (flowPulse1, flowPulse2)
-        if (configs[0]?.flowSensor[0]['timeout']) device.set({flowTimeout1: configs[0]?.flowSensor[0]['timeout']}) // discussion, flowSensor is array, (flowTimeout1, flowTimeout2)
-        // relayOutput ?, and relayOutput is array  tables , orinak jur - channels 1234
+        await DeviceSettings.findAll({
+            where: {id: deviceIds}
+        }).then(async result => {
+            for (let j = 0; j < deviceIds.length; j++) {
+                const deviceSetting = result.find(item => item.id === deviceIds[j])
+                if (!deviceSetting) return res.send({success: false})
 
-        await device.save()
+                const request = configs.find(item => item.id === deviceIds[j])
 
-        return res.send({device})
-        // return res.send({success: true})
+                if (request?.mode) deviceSetting.set({mode: request?.mode})
+                // bpEn ? bypasenable
+                if (request?.bpEn) deviceSetting.set({bypass: request?.bpEn})
+                if (request?.bpTime) deviceSetting.set({bpTime: request.bpTime})
+                if (request?.bpCh) deviceSetting.set({bypassChann: JSON.stringify(request.bpCh)}) // discussion, bypassChann is array
+                if (request?.service) deviceSetting.set({service: request.service})
+                if (request?.hopper?.enabled) deviceSetting.set({hopper: request.hopper.enabled})
+                if (request?.hopper?.nominal) deviceSetting.set({hopperNominal: request.hopper.nominal})
+                if (request?.hopper?.threshold) deviceSetting.set({hopperThreshold: request.hopper.threshold})
+                if (request?.valve?.period) deviceSetting.set({valveP: request.valve.period})
+                if (request?.valve?.duration) deviceSetting.set({ValveD: request.valve.duration})
+                if (request?.valve?.count) deviceSetting.set({ValveC: request.valve.count})
+                if (request?.language) deviceSetting.set({language: request?.language})
+                if (request?.currency) deviceSetting.set({currency: request?.currency})
+                if (request?.dColor) deviceSetting.set({digColor: request?.dColor})
+                if (request?.color) deviceSetting.set({colors: JSON.stringify(request?.color)}) // discussion, colors is array
+                // component ?, and component is array,, ...name
+                // if(request?.component) deviceSetting.set({component: JSON.stringify(request?.component)})
+                if (request?.screen) deviceSetting.set({screen: JSON.stringify(request?.screen)}) // discussion, screen is array
+                if (request?.bonusMode) deviceSetting.set({bonusMode: request?.bonusMode})
+                if (request?.pauseMode) deviceSetting.set({pauseMode: request?.pauseMode})
+                if (request?.hpt) deviceSetting.set({hpt: request?.hpt})
+                if (request?.flowSensor[0]['pulse']) deviceSetting.set({flowPulse1: request?.flowSensor[0]['pulse']}) // discussion, flowSensor is array, (flowPulse1, flowPulse2)
+                if (request?.flowSensor[0]['timeout']) deviceSetting.set({flowTimeout1: request?.flowSensor[0]['timeout']}) // discussion, flowSensor is array, (flowTimeout1, flowTimeout2)
+                // relayOutput ?, and relayOutput is array  tables , orinak jur - channels 1234
+
+                await deviceSetting.save()
+            }
+        }).catch(e => res.send({success: false, error: e}))
+
+        return res.send({success: true})
     } catch (e) {
         console.log('something went wrong', e)
     }

@@ -57,13 +57,13 @@ module.exports = {
             bypassChann: {
                 // type: Sequelize.ENUM,
                 // values: [constants.deviceSettings.bypassChann.Disabled, constants.deviceSettings.bypassChann.Enabled],
-                type: Sequelize.INTEGER,
+                type: Sequelize.STRING,
                 defaultValue: 0,
                 allowNull: true,
-                validate: {
-                    min: 0,
-                    max: 1,
-                }
+                // validate: {
+                //     min: 0,
+                //     max: 1,
+                // }
             },
             bpTime: {
                 type: Sequelize.INTEGER,
@@ -121,7 +121,7 @@ module.exports = {
                 allowNull: true,
             },
             tariffPct: {
-                type: Sequelize.INTEGER,
+                type: Sequelize.STRING,
                 defaultValue: 0,
                 allowNull: true,
                 validate: {
@@ -298,22 +298,22 @@ module.exports = {
                 }
             },
             colors: {
-                type: Sequelize.INTEGER,
+                type: Sequelize.STRING,
                 allowNull: true,
                 defaultValue: 1,
-                validate: {
-                    min: 1,
-                    max: 7,
-                }
+                // validate: {
+                //     min: 1,
+                //     max: 7,
+                // }
             },
             screen: {
-                type: Sequelize.INTEGER,
+                type: Sequelize.STRING,
                 allowNull: true,
                 defaultValue: 0,
-                validate: {
-                    min: 0,
-                    max: 1000,
-                }
+                // validate: {
+                //     min: 0,
+                //     max: 1000,
+                // }
             },
             devID: {
                 type: Sequelize.INTEGER,
