@@ -1,12 +1,11 @@
+const {Op} = require("sequelize");
+const constants = require('../utils/constants')
+
 const CarWashPoint = require('../models').carWashPoint
 const CarWashDevice = require('../models').carWashDevice
 const DeviceSettings = require('../models').deviceSettings
 const Counter = require('../models').counters
 const Component = require('../models').components
-
-const {Op} = require("sequelize");
-
-const constants = require('../utils/constants')
 
 const changeName = async (req, res) => {
     try {

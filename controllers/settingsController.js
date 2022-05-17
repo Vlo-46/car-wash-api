@@ -30,7 +30,7 @@ const getCommands = async (req, res) => {
         }
 
         const request = http.request(requestOptions, (response) => {
-            // handle response here
+
         });
 
         return res.send({devices, request})
@@ -270,15 +270,15 @@ const confirmServiceReset = async (req, res) => {
             where: {id}
         })
             .then(async result => {
-                let request = id.find(i => i === result?.filter(r => r.id === i)[0].id)
-                let counter = result.find(item => item.id === request)
+                for (let j = 0; j < id.length; j++) {
+                    let counter = result.find(item => item.id === id[j])
 
-                if (!counter) return res.send({success: false})
+                    if (!counter) return res.send({success: false})
 
-                counter.serviceT = 0
-                counter.serviceD = 0
+                    counter.serviceD = 0
 
-                await counter.save()
+                    await counter.save()
+                }
 
                 return res.send({success: true})
             })
@@ -315,14 +315,18 @@ const freeModeFlags = async (req, res) => {
         await DeviceSettings.findAll({
             where: {id: deviceIds}
         }).then(async (result) => {
-            let request = freeModeflag.find(i => i.id === result?.filter(r => r.id === i.id)[0].id)
-            let device = result.find(item => item.id === request.id)
+            for (let j = 0; j < deviceIds.length; j++) {
+                let deviceSetting = result.find(item => item.id === deviceIds[j])
 
-            if (!device) return res.send({success: false})
+                if (!deviceSetting) return res.send({success: false})
 
-            device.bonusMode = request.flag;
+                let request = freeModeflag.find(item => item.id === deviceIds[j])
 
-            await device.save()
+                deviceSetting.bonusMode = request.flag;
+
+                await deviceSetting.save()
+            }
+
             return res.send({success: true})
         }).catch(err => {
             return res.send({success: false})
@@ -352,14 +356,18 @@ const deviceDisabledFlags = async (req, res) => {
         await DeviceSettings.findAll({
             where: {id: deviceIds}
         }).then(async (result) => {
-            let request = isDisabled.find(i => i.id === result?.filter(r => r.id === i.id)[0].id)
-            let device = result.find(item => item.id === request.id)
+            for (let j = 0; j < deviceIds.length; j++) {
+                let deviceSetting = result.find(item => item.id === deviceIds[j])
 
-            if (!device) return res.send({success: false})
+                if (!deviceSetting) return res.send({success: false})
 
-            device.pauseMode = request.flag;
+                let request = isDisabled.find(item => item.id === deviceIds[j])
 
-            await device.save()
+                deviceSetting.pauseMode = request.flag;
+
+                await deviceSetting.save()
+            }
+
             return res.send({success: true})
         }).catch(err => {
             return res.send({success: false})
@@ -660,16 +668,6 @@ const removeComponentFromTotal = async (req, res) => {
     }
 }
 
-const checkStatistics = async (req, res) => {
-    try {
-        const {id} = req.user;
-
-
-        return res.send('check statistics')
-    } catch (e) {
-        console.log('something went wrong', e)
-    }
-}
 
 module.exports = {
     getCommands,
@@ -683,7 +681,6 @@ module.exports = {
     receiveBasicSettings,
     sendExtendedSettings,
     receiveDateTime,
-    checkStatistics,
     getTotalComponents,
     addComponentToTotal,
     editComponentFromTotal,

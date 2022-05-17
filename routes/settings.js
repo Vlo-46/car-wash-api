@@ -15,8 +15,6 @@ router.get('/settings/basic', authMiddleware.isAuth, settingsController.receiveB
 router.put('/settings/extended', authMiddleware.isAuth, settingsController.sendExtendedSettings)
 router.get('/settings/date', authMiddleware.isAuth, settingsController.receiveDateTime)
 
-router.get('/checkStatistics', authMiddleware.userRole, settingsController.checkStatistics)
-
 router.get('/total-components', authMiddleware.isAuth, settingsController.getTotalComponents)
 router.post('/total-component', authMiddleware.adminRole, settingsController.addComponentToTotal)
 router.post('/total-component/edit', authMiddleware.adminRole, settingsController.editComponentFromTotal)
