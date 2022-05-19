@@ -54,7 +54,17 @@ const getSingleCarWashPoint = async (req, res) => {
     try {
         const {point_id} = req.params;
 
-        const point = await CarWashPoint.findByPk(point_id)
+        const point = await CarWashPoint.findOne({
+            where: {
+                id: point_id,
+                [Op.or]: [
+                    {user_id: req.user.id},
+                    {technician_id: req.user.id},
+                ]
+            }
+        })
+
+        if (!point) return res.send({success: false, msg: 'Not found'})
 
         return res.send(point)
     } catch (e) {
@@ -105,6 +115,8 @@ const getCarWashDevices = async (req, res) => {
             where: {technician_id: req.user.id}
         })
 
+        if (!carWashDevices) return res.send({success: false, msg: 'Not found'})
+
         return res.send(carWashDevices)
     } catch (e) {
         console.log('something went wrong', e)
@@ -114,11 +126,16 @@ const getCarWashDevices = async (req, res) => {
 const getSingleDevice = async (req, res) => {
     try {
         const {device_id} = req.params
-        const device = await CarWashDevice.findByPk(device_id, {
+        const device = await CarWashDevice.findOne({
+            where: {
+                id: device_id,
+            },
             include: [
                 DeviceSettings, Counter, Component
             ]
         })
+
+        if (!device) return res.send({success: false, msg: "Not found"})
 
         return res.send(device)
     } catch (e) {
@@ -163,7 +180,7 @@ const removeTheCarWashDevice = async (req, res) => {
             }
         }).then(() => {
             res.send({success: true})
-        });
+        }).catch(e => res.send({success: false, error: e}))
 
     } catch (e) {
         console.log('something went wrong', e)
@@ -177,11 +194,14 @@ const addComponents = async (req, res) => {
 
         const device = await CarWashDevice.findOne({
             where: {
-                technician_id: id
+                [Op.and]: [
+                    {technician_id: id},
+                    {id: device_id},
+                ]
             }
         })
 
-        if (!device) return res.send({success: false})
+        if (!device) return res.send({success: false, msg: 'Not found'})
 
         const existComponent = await Component.findOne({
             where: {
@@ -210,6 +230,17 @@ const addComponents = async (req, res) => {
 const editComponent = async (req, res) => {
     try {
         const {id, device_id, value, name} = req.body;
+
+        const device = await CarWashDevice.findOne({
+            where: {
+                [Op.and]: [
+                    {id: device_id},
+                    {technician_id: req.user.id}
+                ]
+            }
+        })
+
+        if (!device) return res.send({success: false, msg: 'Not found'})
 
         const component = await Component.findByPk(id, {
             where: {device_id}

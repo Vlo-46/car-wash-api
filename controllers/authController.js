@@ -40,13 +40,6 @@ const signIn = async (req, res) => {
         );
 
         candidate.set({token})
-
-        // const timeOut = 3600 * 24;
-
-        // setTimeout(async () => {
-        //     candidate.set({token: null})
-        //     await candidate.save();
-        // }, timeOut)
         await candidate.save()
 
         return res.send({success: true, token, msg: "Login successful"})
@@ -106,6 +99,8 @@ const getAuth = async (req, res) => {
             include: carWashAssociation.length ? carWashAssociation : []
         })
 
+        if (!candidate) return res.send({success: false, msg: 'Not found'})
+
         return res.send(candidate)
     } catch (e) {
         console.log('something went wrong', e)
@@ -115,6 +110,8 @@ const getAuth = async (req, res) => {
 const logout = async (req, res) => {
     try {
         const candidate = await User.findByPk(req.user.id);
+        if (!candidate) return res.send({success: false, msg: 'Not found'})
+
         candidate.set({token: null})
         await candidate.save();
         return res.send({success: true})
@@ -128,7 +125,7 @@ const addEmail = async (req, res) => {
         const {email} = req.body;
         const candidate = await User.findByPk(req.user.id)
 
-        if (!candidate) return res.send({success: false})
+        if (!candidate) return res.send({success: false, msg: 'Not found'})
 
         candidate.set({email})
         await candidate.save()
@@ -143,6 +140,8 @@ const changePassword = async (req, res) => {
     try {
         const {oldPassword, newPassword} = req.body;
         const candidate = await User.findByPk(req.user.id)
+
+        if (!candidate) return res.send({success: false, msg: 'Not found'})
 
         const areSame = await bcrypt.compare(oldPassword, candidate.password);
         if (!areSame) return res.send({success: false, msg: 'invalid password'})
@@ -166,7 +165,7 @@ const changeTechnicianPassword = async (req, res) => {
 
         const candidate = await User.findByPk(id)
 
-        if (!candidate) return res.send({success: false})
+        if (!candidate) return res.send({success: false, msg: 'Not found'})
         if (candidate.role !== constants.userTypes.TECHNICIAN) return res.send({success: false})
 
         const hashPassword = await bcrypt.hash(password, 10)
@@ -245,7 +244,7 @@ const forgotPassword = async (req, res) => {
 
         const candidate = await User.findByPk(isValid.user_id)
 
-        if (!candidate) return res.send({success: false, msg: 'user not found'})
+        if (!candidate) return res.send({success: false, msg: 'Not found'})
         candidate.set({password: hashPassword})
         candidate.set({firstLogin: true})
 

@@ -30,7 +30,6 @@ const getCommands = async (req, res) => {
         }
 
         const request = http.request(requestOptions, (response) => {
-
         });
 
         return res.send({devices, request})
@@ -212,12 +211,6 @@ const confirmCountersReset = async (req, res) => {
     try {
         const {id} = req.body;
 
-        // const user_id = req.user.id;
-        // const role = req.user.role;
-        //
-        // if (role !== constants.userTypes.USER) return res.status(403).json({success: false})
-        // bug
-
         const data = {
             "id": [0]
         }
@@ -293,11 +286,6 @@ const confirmServiceReset = async (req, res) => {
 const freeModeFlags = async (req, res) => {
     try {
         const {freeModeflag} = req.body;
-
-        // const user_id = req.user.id;
-        // const role = req.user.role;
-        //
-        // if (role !== constants.userTypes.USER) return res.status(403).json({success: false})
 
         const data = {
             "freeModeflag": [
@@ -637,10 +625,9 @@ const sendExtendedSettings = async (req, res) => {
                 const request = configs.find(item => item.id === deviceIds[j])
 
                 if (request?.mode) deviceSetting.set({mode: request?.mode})
-                // bpEn ? bypasenable
                 if (request?.bpEn) deviceSetting.set({bypass: request?.bpEn})
                 if (request?.bpTime) deviceSetting.set({bpTime: request.bpTime})
-                if (request?.bpCh) deviceSetting.set({bypassChann: JSON.stringify(request.bpCh)}) // discussion, bypassChann is array
+                if (request?.bpCh) deviceSetting.set({bypassChann: JSON.stringify(request.bpCh)})
                 if (request?.service) deviceSetting.set({service: request.service})
                 if (request?.hopper?.enabled) deviceSetting.set({hopper: request.hopper.enabled})
                 if (request?.hopper?.nominal) deviceSetting.set({hopperNominal: request.hopper.nominal})
@@ -651,16 +638,16 @@ const sendExtendedSettings = async (req, res) => {
                 if (request?.language) deviceSetting.set({language: request?.language})
                 if (request?.currency) deviceSetting.set({currency: request?.currency})
                 if (request?.dColor) deviceSetting.set({digColor: request?.dColor})
-                if (request?.color) deviceSetting.set({colors: JSON.stringify(request?.color)}) // discussion, colors is array
-                // component ?, and component is array,, ...name
-                // if(request?.component) deviceSetting.set({component: JSON.stringify(request?.component)})
-                if (request?.screen) deviceSetting.set({screen: JSON.stringify(request?.screen)}) // discussion, screen is array
+                if (request?.color) deviceSetting.set({colors: JSON.stringify(request?.color)})
+                if (request?.screen) deviceSetting.set({screen: JSON.stringify(request?.screen)})
                 if (request?.bonusMode) deviceSetting.set({bonusMode: request?.bonusMode})
                 if (request?.pauseMode) deviceSetting.set({pauseMode: request?.pauseMode})
                 if (request?.hpt) deviceSetting.set({hpt: request?.hpt})
+                // component ?, and component is array,, ...name
+                // if(request?.component) deviceSetting.set({component: JSON.stringify(request?.component)})
+                // relayOutput ?, and relayOutput is array  tables , orinak jur - channels 1234
                 if (request?.flowSensor[0]['pulse']) deviceSetting.set({flowPulse1: request?.flowSensor[0]['pulse']}) // discussion, flowSensor is array, (flowPulse1, flowPulse2)
                 if (request?.flowSensor[0]['timeout']) deviceSetting.set({flowTimeout1: request?.flowSensor[0]['timeout']}) // discussion, flowSensor is array, (flowTimeout1, flowTimeout2)
-                // relayOutput ?, and relayOutput is array  tables , orinak jur - channels 1234
 
                 await deviceSetting.save()
             }
@@ -682,7 +669,6 @@ const receiveDateTime = async (req, res) => {
             ]
         })
 
-
         const data = {
             success: true,
             dateTime: device.DeviceSetting.dateTime
@@ -703,7 +689,6 @@ const getTotalComponents = async (req, res) => {
         const totalComponents = await TotalComponent.findAll()
 
         return res.send(totalComponents)
-
     } catch (e) {
         console.log('something went wrong', e)
     }
@@ -733,7 +718,6 @@ const editComponentFromTotal = async (req, res) => {
         await component.save()
 
         return res.send({success: true, component})
-
     } catch (e) {
         console.log('something went wrong', e)
     }
