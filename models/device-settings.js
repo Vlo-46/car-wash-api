@@ -194,6 +194,14 @@ module.exports = (sequelize, DataTypes) => {
                 max: 9999,
             }
         },
+        component: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+        relayOutput: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
         bingoThr: {
             type: DataTypes.INTEGER,
             allowNull: true,

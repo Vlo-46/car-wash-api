@@ -6,7 +6,8 @@ const TotalComponent = require('../models').total_components
 
 const constants = require('../utils/constants')
 
-const http = require("http");
+const {connect, StringCodec} = require('nats')
+const sc = StringCodec();
 
 const getCommands = async (req, res) => {
     try {
@@ -16,23 +17,17 @@ const getCommands = async (req, res) => {
             where: {id: JSON.parse(id)}
         })
 
-        let keepAliveAgent = new http.Agent({
-            keepAlive: true
-        });
+        const nc = await connect({servers: process.env.NATS_SERVER});
 
-        const requestOptions = {
-            agent: keepAliveAgent,
-            host: 'localhost',
-            port: '5000',
-            headers: {
-                Connection: 'keep-alive'
-            }
-        }
+        const sub = nc.subscribe('cmdReadCounters');
 
-        const request = http.request(requestOptions, (response) => {
-        });
+        // console.log('get commands', sub)
+        nc.publish("cmdReadCounters", sc.encode(2));
 
-        return res.send({devices, request})
+        // await nc.closed();
+        await nc.drain();
+
+        return res.send({devices})
     } catch (e) {
         console.log('something went wrong', e)
     }
@@ -64,8 +59,13 @@ const getCounters = async (req, res) => {
             ]
         })
 
-        return res.send(carWashPoints)
+        // const nc = await connect({servers: process.env.NATS_SERVER});
+        // const sc = StringCodec();
+        // nc.subscribe('cmdReadCounters');
+        //
+        // nc.publish("cmdReadCounters", sc.encode(2));
 
+        return res.send(carWashPoints)
     } catch (e) {
         console.log('something went wrong', e)
     }
@@ -643,9 +643,8 @@ const sendExtendedSettings = async (req, res) => {
                 if (request?.bonusMode) deviceSetting.set({bonusMode: request?.bonusMode})
                 if (request?.pauseMode) deviceSetting.set({pauseMode: request?.pauseMode})
                 if (request?.hpt) deviceSetting.set({hpt: request?.hpt})
-                // component ?, and component is array,, ...name
-                // if(request?.component) deviceSetting.set({component: JSON.stringify(request?.component)})
-                // relayOutput ?, and relayOutput is array  tables , orinak jur - channels 1234
+                if (request?.component) deviceSetting.set({component: JSON.stringify(request?.component)})
+                if (request?.relayOutput) deviceSetting.set({relayOutput: JSON.stringify(request?.relayOutput)})
                 if (request?.flowSensor[0]['pulse']) deviceSetting.set({flowPulse1: request?.flowSensor[0]['pulse']}) // discussion, flowSensor is array, (flowPulse1, flowPulse2)
                 if (request?.flowSensor[0]['timeout']) deviceSetting.set({flowTimeout1: request?.flowSensor[0]['timeout']}) // discussion, flowSensor is array, (flowTimeout1, flowTimeout2)
 

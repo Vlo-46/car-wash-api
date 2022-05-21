@@ -195,6 +195,14 @@ module.exports = {
                     max: 9999,
                 }
             },
+            component: {
+                type: Sequelize.STRING,
+                allowNull: true,
+            },
+            relayOutput: {
+                type: Sequelize.STRING,
+                allowNull: true,
+            },
             bingoThr: {
                 type: Sequelize.INTEGER,
                 allowNull: true,
