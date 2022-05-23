@@ -8,7 +8,7 @@ const users = [
         role: constants.userTypes.ADMIN,
         token: null,
         active: true,
-        firstLogin: true,
+        firstLogin: false,
         createdAt: new Date(),
         updatedAt: new Date()
     },

@@ -149,7 +149,7 @@ const changePassword = async (req, res) => {
         const hashPassword = await bcrypt.hash(newPassword, 10)
 
         candidate.set({password: hashPassword})
-        candidate.set({firstLogin: true})
+        candidate.set({firstLogin: false})
 
         await candidate.save()
 

@@ -202,6 +202,7 @@ const addComponents = async (req, res) => {
         })
 
         if (!device) return res.send({success: false, msg: 'Not found'})
+        if (device.disabled) return res.send({success: false, msg: 'Device is disabled'})
 
         const existComponent = await Component.findOne({
             where: {
@@ -243,6 +244,7 @@ const editComponent = async (req, res) => {
         })
 
         if (!device) return res.send({success: false, msg: 'Not found'})
+        if (device.disabled) return res.send({success: false, msg: 'Device is disabled'})
 
         const component = await Component.findByPk(id, {
             where: {device_id}

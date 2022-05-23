@@ -6,9 +6,8 @@ const TotalComponent = require('../models').total_components
 
 const constants = require('../utils/constants')
 
-const {connect, StringCodec, JSONCodec, Empty} = require('nats')
+const {connect, StringCodec, Empty} = require('nats')
 const sc = StringCodec();
-const jc = JSONCodec()
 
 let publishToNats = async ({commandName, command}) => {
     const nc = await connect({servers: process.env.NATS_SERVER});
@@ -717,9 +716,7 @@ const changeDeviceDateTime = async (req, res) => {
 
         if (!deviceSetting) return res.send({success: false})
 
-        let dateTime = new_date.toISOString().replaceAll('-', '');
-
-        deviceSetting.set({dateTime})
+        deviceSetting.set({dateTime: new_date})
         await deviceSetting.save()
 
         await publishToNats({commandName: 'cmdSetDateTime', command: 13})

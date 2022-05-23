@@ -35,7 +35,7 @@ module.exports = {
       },
       firstLogin: {
         type: Sequelize.BOOLEAN,
-        defaultValue: false
+        defaultValue: true
       },
       token: {
         type: Sequelize.STRING,

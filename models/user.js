@@ -36,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         firstLogin: {
             type: DataTypes.BOOLEAN,
-            defaultValue: false
+            defaultValue: true
         },
         token: {
             type: DataTypes.STRING,
