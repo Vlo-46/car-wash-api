@@ -12,6 +12,7 @@ router.put('/flags/freeMode', authMiddleware.isAuth, settingsController.freeMode
 router.put('/flags/disabled', authMiddleware.isAuth, settingsController.deviceDisabledFlags)
 router.put('/settings/basic', authMiddleware.isAuth, settingsController.sendBasicSettings)
 router.get('/settings/basic', authMiddleware.isAuth, settingsController.receiveBasicSettings)
+router.get('/settings/extended', authMiddleware.isAuth, settingsController.receiveExtendedSettings)
 router.put('/settings/extended', authMiddleware.isAuth, settingsController.sendExtendedSettings)
 router.get('/settings/date', authMiddleware.isAuth, settingsController.receiveDateTime)
 router.put('/settings/change-date', authMiddleware.isAuth, settingsController.changeDeviceDateTime)

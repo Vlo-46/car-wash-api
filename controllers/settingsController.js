@@ -538,6 +538,25 @@ const receiveBasicSettings = async (req, res) => {
     }
 }
 
+const receiveExtendedSettings = async (req, res) => {
+    try {
+        const {device_id} = req.query
+
+        const device = await DeviceSettings.findOne({
+            where: {
+                device_id
+            }
+        })
+
+        if (!device) return res.send({success: false, msg: 'Not found'})
+
+        return res.send({success: true, device})
+
+    } catch (e) {
+        console.log('something went wrong', e)
+    }
+}
+
 const sendExtendedSettings = async (req, res) => {
     try {
         const {configs} = req.body;
@@ -863,5 +882,6 @@ module.exports = {
     removeComponentFromTotal,
     disableCarWashDevice,
     enableCarWashDevice,
-    changeDeviceDateTime
+    changeDeviceDateTime,
+    receiveExtendedSettings
 }
