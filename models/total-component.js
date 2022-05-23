@@ -9,7 +9,17 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     TotalComponent.init({
-        name: {
+        name_am: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true
+        },
+        name_ru: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true
+        },
+        name_en: {
             type: DataTypes.STRING,
             allowNull: false,
             unique: true

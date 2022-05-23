@@ -13,9 +13,17 @@ module.exports = {
                 type: Sequelize.INTEGER,
                 allowNull: false
             },
-            name: {
+            name_am: {
                 type: Sequelize.STRING,
-                allowNull: false
+                allowNull: false,
+            },
+            name_ru: {
+                type: Sequelize.STRING,
+                allowNull: false,
+            },
+            name_en: {
+                type: Sequelize.STRING,
+                allowNull: false,
             },
             value: {
                 type: Sequelize.INTEGER,

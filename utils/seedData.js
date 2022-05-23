@@ -76,6 +76,7 @@ const carWashDevices = [
         technician_id: 3,
         car_wash_point_id: 1,
         name: 'device_1',
+        disabled: false,
         createdAt: new Date(),
         updatedAt: new Date()
     },
@@ -83,6 +84,7 @@ const carWashDevices = [
         technician_id: 3,
         car_wash_point_id: 1,
         name: 'device_2',
+        disabled: true,
         createdAt: new Date(),
         updatedAt: new Date()
     },
@@ -90,6 +92,7 @@ const carWashDevices = [
         technician_id: 3,
         car_wash_point_id: 2,
         name: 'device_3',
+        disabled: false,
         createdAt: new Date(),
         updatedAt: new Date()
     },
@@ -314,35 +317,45 @@ const technic_users = [
 const components = [
     {
         device_id: 1,
-        name: 'Water',
+        name_am: 'Ջուր',
+        name_ru: 'Вода',
+        name_en: 'Water',
         value: 1,
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
         device_id: 1,
-        name: 'Foam',
+        name_am: 'Փրփուր',
+        name_ru: 'Мыло',
+        name_en: 'Foam',
         value: 2,
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
         device_id: 2,
-        name: 'Water',
+        name_am: 'Ջուր',
+        name_ru: 'Вода',
+        name_en: 'Water',
         value: 1,
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
         device_id: 2,
-        name: 'Foam',
+        name_am: 'Փրփուր',
+        name_ru: 'Мыло',
+        name_en: 'Foam',
         value: 2,
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
         device_id: 3,
-        name: 'Water',
+        name_am: 'Ջուր',
+        name_ru: 'Вода',
+        name_en: 'Water',
         value: 1,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -351,207 +364,289 @@ const components = [
 
 const totalComponents = [
     {
-        name: "Пауза",
+        name_am: "Դադար",
+        name_ru: 'Пауза',
+        name_en: 'Pause',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Вода",
+        name_am: 'Ջուր',
+        name_ru: 'Вода',
+        name_en: 'Water',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Пена",
+        name_am: 'Փրփուր',
+        name_ru: 'Пена',
+        name_en: 'Foam',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Воск",
+        name_am: 'Մոմ',
+        name_ru: 'Воск',
+        name_en: 'Wax',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Пылесос",
+        name_am: 'Փոշեկուլ',
+        name_ru: 'Пылесос',
+        name_en: 'Vacuum cleaner',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Горячая вода",
+        name_am: 'Տաք ջուր',
+        name_ru: 'Горячая вода',
+        name_en: 'Hot water',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Теплая вода",
+        name_am: 'Գոլ ջուր',
+        name_ru: 'Теплая вода',
+        name_en: 'Warm water',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Вода без давления",
+        name_am: 'Ջուր առանց ճնշման',
+        name_ru: 'Вода без давления',
+        name_en: 'Water without pressure',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Дистиллированная вода",
+        name_am: 'Թորած ջուր',
+        name_ru: 'Дистиллированная вода',
+        name_en: 'Distilled water',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Вода талина",
+        name_am: 'Թալինի ջուր',
+        name_ru: 'Вода талина',
+        name_en: 'Talin water',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Пена под давлением",
+        name_am: 'Ճնշված փրփուր',
+        name_ru: 'Пена под давлением',
+        name_en: 'Pressurized foam',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Турбо пена",
+        name_am: 'Տուրբո փրփուր',
+        name_ru: 'Турбо пена',
+        name_en: 'Turbo foam',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Воздух",
+        name_am: 'Օդ',
+        name_ru: 'Воздух',
+        name_en: 'Air',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Осмос",
+        name_am: 'Օսմոզ',
+        name_ru: 'Осмос',
+        name_en: 'Osmosis',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Блеск шин",
+        name_am: 'Անվադողերի փայլ',
+        name_ru: 'Блеск шин',
+        name_en: 'Tire Shine',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Подкачка шин",
+        name_am: 'Անվադողերի ինֆլյացիա',
+        name_ru: 'Подкачка шин',
+        name_en: 'Tire inflation',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Жидкость двигателя",
+        name_am: 'Շարժիչի հեղուկ',
+        name_ru: 'Жидкость двигателя',
+        name_en: 'Engine fluid',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Щетка",
+        name_am: 'Խոզանակ',
+        name_ru: 'Щетка',
+        name_en: 'Brush',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Ополаскивание",
+        name_am: 'Ողողում',
+        name_ru: 'Ополаскивание',
+        name_en: 'Rinsing',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Уход салона",
+        name_am: 'Սրահի խնամք',
+        name_ru: 'Уход салона',
+        name_en: 'Salon Care',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Жидкость стекол",
+        name_am: 'Ապակու հեղուկ',
+        name_ru: 'Жидкость стекол',
+        name_en: 'Glass liquid',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Освещение",
+        name_am: 'Լուսավորություն',
+        name_ru: 'Освещение',
+        name_en: 'Lighting',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Хоппер",
+        name_am: 'Հոպպեր',
+        name_ru: 'Хоппер',
+        name_en: 'Hopper',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Клапан",
+        name_am: 'Փական',
+        name_ru: 'Клапан',
+        name_en: 'Valve',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Уход стекол",
+        name_am: 'Ապակու խնամք',
+        name_ru: 'Уход стекол',
+        name_en: 'Glass care',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Омывайка",
+        name_am: 'Օմիվայկա',
+        name_ru: 'Омывайка',
+        name_en: 'Omyvayka',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Турбо сушка",
+        name_am: 'Տուրբո չորացում',
+        name_ru: 'Турбо сушка',
+        name_en: 'Turbo drying',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Озон",
+        name_am: 'Օզոն',
+        name_ru: 'Озон',
+        name_en: 'Ozone',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Химия кожа",
+        name_am: 'Կոժի քիմիա',
+        name_ru: 'Химия кожа',
+        name_en: 'Chemistry skin',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Химия ткань",
+        name_am: 'Քիմիայի կտոր',
+        name_ru: 'Химия ткань',
+        name_en: 'Chemistry fabric',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Пар плюс пылесос",
+        name_am: 'Steam plus փոշեկուլ',
+        name_ru: 'Пар плюс пылесос',
+        name_en: 'Steam plus vacuum cleaner',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Антимошка",
+        name_am: 'Անտիմոշկա',
+        name_ru: 'Антимошка',
+        name_en: 'Antimoshka',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Умка",
+        name_am: 'Ումկա',
+        name_ru: 'Умка',
+        name_en: 'Umka',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Актив SPA",
+        name_am: 'Ակտիվ SPA',
+        name_ru: 'Актив SPA',
+        name_en: 'Active SPA',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Шампунь",
+        name_am: 'Շամպուն',
+        name_ru: 'Шампунь',
+        name_en: 'Shampoo',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Химчистка",
+        name_am: 'Չոր մաքրում',
+        name_ru: 'Химчистка',
+        name_en: 'Dry cleaning',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Обдув",
+        name_am: 'փչում',
+        name_ru: 'Обдув',
+        name_en: 'blowing',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Чернение шин",
+        name_am: 'Անվադողերի սևացում',
+        name_ru: 'Чернение шин',
+        name_en: 'Tire blackening',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Полироль",
+        name_am: 'Փոլիշ',
+        name_ru: 'Полироль',
+        name_en: 'polish',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Торнадо",
+        name_am: 'Տորնադո',
+        name_ru: 'Торнадо',
+        name_en: 'Tornado',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name: "Вода для рук",
+        name_am: 'Ջուր ձեռքերի համար',
+        name_ru: 'Вода для рук',
+        name_en: 'Water for hands',
         createdAt: new Date(),
         updatedAt: new Date()
     },

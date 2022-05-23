@@ -14,10 +14,14 @@ router.put('/settings/basic', authMiddleware.isAuth, settingsController.sendBasi
 router.get('/settings/basic', authMiddleware.isAuth, settingsController.receiveBasicSettings)
 router.put('/settings/extended', authMiddleware.isAuth, settingsController.sendExtendedSettings)
 router.get('/settings/date', authMiddleware.isAuth, settingsController.receiveDateTime)
+router.put('/settings/change-date', authMiddleware.isAuth, settingsController.changeDeviceDateTime)
 
 router.get('/total-components', authMiddleware.isAuth, settingsController.getTotalComponents)
 router.post('/total-component', authMiddleware.adminRole, settingsController.addComponentToTotal)
 router.post('/total-component/edit', authMiddleware.adminRole, settingsController.editComponentFromTotal)
 router.post('/total-component/remove', authMiddleware.adminRole, settingsController.removeComponentFromTotal)
+
+router.post('/car-wash/device/disable', authMiddleware.technicianRole, settingsController.disableCarWashDevice)
+router.post('/car-wash/device/enable', authMiddleware.technicianRole, settingsController.enableCarWashDevice)
 
 module.exports = router

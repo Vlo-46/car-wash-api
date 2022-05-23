@@ -13,9 +13,17 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false
         },
-        name: {
+        name_am: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+        },
+        name_ru: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        name_en: {
+            type: DataTypes.STRING,
+            allowNull: false,
         },
         value: {
             type: DataTypes.INTEGER,

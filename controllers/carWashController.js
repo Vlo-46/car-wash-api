@@ -189,7 +189,7 @@ const removeTheCarWashDevice = async (req, res) => {
 
 const addComponents = async (req, res) => {
     try {
-        const {device_id, name, value} = req.body;
+        const {device_id, name_am, name_ru, name_en, value} = req.body;
         const {id} = req.user;
 
         const device = await CarWashDevice.findOne({
@@ -208,7 +208,7 @@ const addComponents = async (req, res) => {
                 device_id,
                 [Op.or]: [
                     {value: {$iLike: value}},
-                    {name}
+                    {name_am}
                 ]
             }
         })
@@ -217,7 +217,9 @@ const addComponents = async (req, res) => {
 
         const component = await Component.create({
             device_id,
-            name,
+            name_am,
+            name_ru,
+            name_en,
             value
         })
 
@@ -229,7 +231,7 @@ const addComponents = async (req, res) => {
 
 const editComponent = async (req, res) => {
     try {
-        const {id, device_id, value, name} = req.body;
+        const {id, device_id, value, name_am, name_ru, name_en} = req.body;
 
         const device = await CarWashDevice.findOne({
             where: {
@@ -253,7 +255,7 @@ const editComponent = async (req, res) => {
                 device_id,
                 [Op.or]: [
                     {value: {$iLike: value}},
-                    {name}
+                    {name_am}
                 ]
             }
         })
@@ -261,7 +263,9 @@ const editComponent = async (req, res) => {
         if (existComponent) return res.send({success: false, msg: 'There is already a component with this value'})
 
         component.set({value})
-        component.set({name})
+        component.set({name_am})
+        component.set({name_ru})
+        component.set({name_en})
 
         await component.save()
 
@@ -312,5 +316,5 @@ module.exports = {
     getSingleDevice,
     addComponents,
     editComponent,
-    removeComponent
+    removeComponent,
 }

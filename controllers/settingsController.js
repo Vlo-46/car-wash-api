@@ -6,28 +6,56 @@ const TotalComponent = require('../models').total_components
 
 const constants = require('../utils/constants')
 
-const {connect, StringCodec} = require('nats')
+const {connect, StringCodec, JSONCodec, Empty} = require('nats')
 const sc = StringCodec();
+const jc = JSONCodec()
+
+let publishToNats = async ({commandName, command}) => {
+    const nc = await connect({servers: process.env.NATS_SERVER});
+    const sub = nc.subscribe("commands");
+
+    (async (sub) => {
+        for await (const m of sub) {
+            if (m.respond(sc.encode(JSON.stringify({commandName, command})))) {
+                console.info(`[command] handled #${sub.getProcessed()}:  ${sc.decode(m.data)}`);
+            } else {
+                console.log(`[command] #${sub.getProcessed()} ignored - no reply subject`);
+            }
+        }
+    })(sub);
+
+    // await nc.closed().then((err) => {
+    //     let m = `connection to ${nc.getServer()} closed`;
+    //     if (err) {
+    //         m = `${m} with an error: ${err.message}`;
+    //     }
+    //     console.log(m);
+    // });
+}
 
 const getCommands = async (req, res) => {
     try {
         const {id} = req.query;
 
-        const devices = await CarWashDevice.findAll({
-            where: {id: JSON.parse(id)}
-        })
+        // const devices = await CarWashDevice.findAll({
+        //     where: {id: JSON.parse(id)}
+        // })
 
         const nc = await connect({servers: process.env.NATS_SERVER});
 
-        const sub = nc.subscribe('cmdReadCounters');
+        let command;
+        await nc.request("commands", Empty, {timeout: 10000})
+            .then((m) => {
+                command = sc.decode(m.data)
+                console.log(`got response testing: ${sc.decode(m.data)}`);
+            })
+            .catch((err) => {
+                console.log(`problem with request: ${err.message}`);
+            });
 
-        // console.log('get commands', sub)
-        nc.publish("cmdReadCounters", sc.encode(2));
+        await nc.close();
 
-        // await nc.closed();
-        await nc.drain();
-
-        return res.send({devices})
+        return res.send({command: JSON.parse(command).command})
     } catch (e) {
         console.log('something went wrong', e)
     }
@@ -59,11 +87,7 @@ const getCounters = async (req, res) => {
             ]
         })
 
-        // const nc = await connect({servers: process.env.NATS_SERVER});
-        // const sc = StringCodec();
-        // nc.subscribe('cmdReadCounters');
-        //
-        // nc.publish("cmdReadCounters", sc.encode(2));
+        await publishToNats({commandName: 'cmdReadCounters', command: 2})
 
         return res.send(carWashPoints)
     } catch (e) {
@@ -240,6 +264,7 @@ const confirmCountersReset = async (req, res) => {
                     counter.powerOnTime = 0
 
                     await counter.save()
+                    await publishToNats({commandName: 'cmdResetCounters', command: 3})
                 }
                 return res.send({success: true})
             })
@@ -272,7 +297,7 @@ const confirmServiceReset = async (req, res) => {
 
                     await counter.save()
                 }
-
+                await publishToNats({commandName: 'cmdResetService', command: 4})
                 return res.send({success: true})
             })
             .catch(e => {
@@ -314,7 +339,7 @@ const freeModeFlags = async (req, res) => {
 
                 await deviceSetting.save()
             }
-
+            await publishToNats({commandName: 'cmdFreeModeOn', command: 5})
             return res.send({success: true})
         }).catch(err => {
             return res.send({success: false})
@@ -355,7 +380,7 @@ const deviceDisabledFlags = async (req, res) => {
 
                 await deviceSetting.save()
             }
-
+            await publishToNats({commandName: 'cmdFreeModeOff', command: 6})
             return res.send({success: true})
         }).catch(err => {
             return res.send({success: false})
@@ -448,6 +473,7 @@ const sendBasicSettings = async (req, res) => {
             }
         }).catch(e => res.send({success: false, error: e}))
 
+        await publishToNats({commandName: 'cmdWriteBasicSettings', command: 10})
         return res.send({success: true})
     } catch (e) {
         console.log('something went wrong', e)
@@ -504,6 +530,8 @@ const receiveBasicSettings = async (req, res) => {
             success: true,
             settings
         }
+
+        await publishToNats({commandName: 'cmdReadBasicSettings', command: 9})
 
         return res.send(response)
     } catch (e) {
@@ -652,6 +680,8 @@ const sendExtendedSettings = async (req, res) => {
             }
         }).catch(e => res.send({success: false, error: e}))
 
+        await publishToNats({commandName: 'cmdWriteExtendedSettings', command: 12})
+
         return res.send({success: true})
     } catch (e) {
         console.log('something went wrong', e)
@@ -679,6 +709,82 @@ const receiveDateTime = async (req, res) => {
     }
 }
 
+const changeDeviceDateTime = async (req, res) => {
+    try {
+        const {device_id, new_date} = req.body;
+
+        const deviceSetting = await DeviceSettings.findByPk(device_id)
+
+        if (!deviceSetting) return res.send({success: false})
+
+        let dateTime = new_date.toISOString().replaceAll('-', '');
+
+        deviceSetting.set({dateTime})
+        await deviceSetting.save()
+
+        await publishToNats({commandName: 'cmdSetDateTime', command: 13})
+        return res.send({success: true})
+
+    } catch (e) {
+        console.log('something went wrong', e)
+    }
+}
+
+const disableCarWashDevice = async (req, res) => {
+    try {
+        const {device_id} = req.body;
+        const {id} = req.user;
+
+        const device = await CarWashDevice.findOne({
+            where: {
+                [Op.and]: [
+                    {id: device_id},
+                    {technician_id: id}
+                ]
+            }
+        })
+
+        if (!device) return res.send({success: false, msg: 'Not found'})
+
+        device.disable = true
+        await device.save()
+
+        await publishToNats({commandName: 'cmdDeviceDisable', command: 7})
+
+        return res.send({success: true})
+
+    } catch (e) {
+        console.log('something went wrong', e)
+    }
+}
+
+const enableCarWashDevice = async (req, res) => {
+    try {
+        const {device_id} = req.body;
+        const {id} = req.user;
+
+        const device = await CarWashDevice.findOne({
+            where: {
+                [Op.and]: [
+                    {id: device_id},
+                    {technician_id: id}
+                ]
+            }
+        })
+
+        if (!device) return res.send({success: false, msg: 'Not found'})
+
+        device.disable = false
+        await device.save()
+
+        await publishToNats({commandName: 'cmdDeviceEnable', command: 8})
+        return res.send({success: true})
+    } catch (e) {
+        console.log('something went wrong', e)
+    }
+}
+
+
 const getTotalComponents = async (req, res) => {
     try {
         const {role} = req.user;
@@ -695,9 +801,9 @@ const getTotalComponents = async (req, res) => {
 
 const addComponentToTotal = async (req, res) => {
     try {
-        const {name} = req.body;
+        const {name_am, name_ru, name_en} = req.body;
 
-        const component = await TotalComponent.create({name})
+        const component = await TotalComponent.create({name_am, name_ru, name_en})
 
         return res.send({success: true, component})
     } catch (e) {
@@ -707,13 +813,15 @@ const addComponentToTotal = async (req, res) => {
 
 const editComponentFromTotal = async (req, res) => {
     try {
-        const {id, name} = req.body;
+        const {id, name_am, name_ru, name_en} = req.body;
 
         const component = await TotalComponent.findByPk(id)
 
         if (!component) return res.send({success: false, msg: "Not found"})
 
-        component.name = name;
+        component.name_am = name_am;
+        component.name_ru = name_ru;
+        component.name_en = name_en;
         await component.save()
 
         return res.send({success: true, component})
@@ -755,5 +863,8 @@ module.exports = {
     getTotalComponents,
     addComponentToTotal,
     editComponentFromTotal,
-    removeComponentFromTotal
+    removeComponentFromTotal,
+    disableCarWashDevice,
+    enableCarWashDevice,
+    changeDeviceDateTime
 }
