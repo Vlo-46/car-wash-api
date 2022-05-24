@@ -1,13 +1,8 @@
-import {where} from "sequelize";
-
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const {Op} = require('sequelize')
 const nodemailer = require('nodemailer')
 const constants = require('../utils/constants')
-
-// const Cryptr = require('cryptr');
-// const cryptr = new Cryptr(process.env.CRYPTR_SECRET_KET);
 
 const User = require('../models').users
 const TechnicianUsers = require('../models').technician_users

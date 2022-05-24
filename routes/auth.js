@@ -14,6 +14,7 @@ router.post('/change-password', authMiddleware.isAuth, authController.changePass
 
 
 // forgot password by steps
+
 router.post('/forgot-password/email', authController.forgotPasswordSendEmail)
 router.post('/forgot-password/confirm-code', authController.confirmTheCodeSentByEmail)
 router.post('/forgot-password/change', authController.forgotPassword)
