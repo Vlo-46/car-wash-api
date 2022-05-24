@@ -178,7 +178,15 @@ const removeTheCarWashDevice = async (req, res) => {
                     {technician_id: id}
                 ]
             }
-        }).then(() => {
+        }).then(async () => {
+            const settings = await DeviceSettings.findOne({where: {device_id}})
+            const counter = await Counter.findOne({where: {device_id}})
+            const component = await Component.findOne({where: {device_id}})
+
+            await settings.destroy()
+            await counter.destroy()
+            await component.destroy()
+
             res.send({success: true})
         }).catch(e => res.send({success: false, error: e}))
 

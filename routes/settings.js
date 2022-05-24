@@ -5,6 +5,7 @@ const settingsController = require('../controllers/settingsController')
 
 router.get('/command', authMiddleware.isAuth, settingsController.getCommands)
 router.get('/counters', authMiddleware.isAuth, settingsController.getCounters)
+router.get('/counter', authMiddleware.isAuth, settingsController.getCounter)
 router.put('/counters', authMiddleware.isAuth, settingsController.updateCounters)
 router.put('/counters/countersResetConfirm', authMiddleware.isAuth, settingsController.confirmCountersReset)
 router.put('/counters/serviceResetConfirm', authMiddleware.isAuth, settingsController.confirmServiceReset)

@@ -1,3 +1,5 @@
+import {where} from "sequelize";
+
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const {Op} = require('sequelize')
@@ -448,6 +450,45 @@ const getUsers = async (req, res) => {
     }
 }
 
+const createAdmin = async (req, res) => {
+    try {
+        const {username, password} = req.body;
+
+        const candidate = await User.findOne({where: {username}});
+        if (candidate) return res.send({
+            success: false,
+            msg: `${constants.userTypes.ADMIN} exist`
+        });
+
+        const hashPassword = await bcrypt.hash(password, 10);
+
+        const user = await User.create({
+            username,
+            password: hashPassword,
+            role: constants.userTypes.ADMIN,
+            active: true,
+        })
+
+        res.send({success: true, candidate: user});
+    } catch (e) {
+        console.log('something went wrong', e)
+    }
+}
+
+const removeAdmin = async (req, res) => {
+    try {
+        const {id} = req.body;
+
+        const candidate = await User.findByPk(id)
+        if (!candidate) return res.send({success: false})
+
+        await candidate.destroy()
+
+        return res.send({success: true})
+    } catch (e) {
+        console.log('something went wrong', e)
+    }
+}
 
 module.exports = {
     signIn,
@@ -465,5 +506,7 @@ module.exports = {
     forgotPasswordSendEmail,
     confirmTheCodeSentByEmail,
     forgotPassword,
-    getUsers
+    getUsers,
+    createAdmin,
+    removeAdmin
 }

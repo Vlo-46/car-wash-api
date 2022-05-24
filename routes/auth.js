@@ -20,6 +20,8 @@ router.post('/forgot-password/change', authController.forgotPassword)
 
 // admin routes
 
+router.post('/admin/create', authMiddleware.adminRole, authController.createAdmin)
+router.post('/admin/remove', authMiddleware.adminRole, authController.removeAdmin)
 router.post('/technician/create', authMiddleware.adminRole, authController.registerTechnician)
 router.post('/technician/deactivate', authMiddleware.adminRole, authController.deactivateTechnicianAccount)
 router.post('/technician/activate', authMiddleware.adminRole, authController.activateTechnicianAccount)
