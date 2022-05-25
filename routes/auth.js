@@ -12,7 +12,6 @@ router.get('/auth/me', authMiddleware.isAuth, authController.getAuth)
 router.post('/email', authMiddleware.isAuth, authController.addEmail)
 router.post('/change-password', authMiddleware.isAuth, authController.changePassword)
 
-
 // forgot password by steps
 
 router.post('/forgot-password/email', authController.forgotPasswordSendEmail)

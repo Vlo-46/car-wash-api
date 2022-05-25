@@ -700,24 +700,32 @@ const sendExtendedSettings = async (req, res) => {
                 if (request?.bpTime) deviceSetting.set({bpTime: request.bpTime})
                 if (request?.bpCh) deviceSetting.set({bypassChann: JSON.stringify(request.bpCh)})
                 if (request?.service) deviceSetting.set({service: request.service})
+
                 if (request?.hopper?.enabled) deviceSetting.set({hopper: request.hopper.enabled})
                 if (request?.hopper?.nominal) deviceSetting.set({hopperNominal: request.hopper.nominal})
                 if (request?.hopper?.threshold) deviceSetting.set({hopperThreshold: request.hopper.threshold})
+
                 if (request?.valve?.period) deviceSetting.set({valveP: request.valve.period})
                 if (request?.valve?.duration) deviceSetting.set({ValveD: request.valve.duration})
                 if (request?.valve?.count) deviceSetting.set({ValveC: request.valve.count})
+
                 if (request?.language) deviceSetting.set({language: request?.language})
                 if (request?.currency) deviceSetting.set({currency: request?.currency})
+
                 if (request?.dColor) deviceSetting.set({digColor: request?.dColor})
                 if (request?.color) deviceSetting.set({colors: JSON.stringify(request?.color)})
+
                 if (request?.screen) deviceSetting.set({screen: JSON.stringify(request?.screen)})
                 if (request?.bonusMode) deviceSetting.set({bonusMode: request?.bonusMode})
                 if (request?.pauseMode) deviceSetting.set({pauseMode: request?.pauseMode})
                 if (request?.hpt) deviceSetting.set({hpt: request?.hpt})
                 if (request?.component) deviceSetting.set({component: JSON.stringify(request?.component)})
                 if (request?.relayOutput) deviceSetting.set({relayOutput: JSON.stringify(request?.relayOutput)})
-                if (request?.flowSensor[0]['pulse']) deviceSetting.set({flowPulse1: request?.flowSensor[0]['pulse']}) // discussion, flowSensor is array, (flowPulse1, flowPulse2)
-                if (request?.flowSensor[0]['timeout']) deviceSetting.set({flowTimeout1: request?.flowSensor[0]['timeout']}) // discussion, flowSensor is array, (flowTimeout1, flowTimeout2)
+
+                if (request?.flowSensor[0].length && request?.flowSensor[0]['pulse']) deviceSetting.set({flowPulse1: request?.flowSensor[0]['pulse']})
+                if (request?.flowSensor[0].length && request?.flowSensor[0]['timeout']) deviceSetting.set({flowTimeout1: request?.flowSensor[0]['timeout']})
+                if (request?.flowSensor[1].length && request?.flowSensor[1]['pulse']) deviceSetting.set({flowPulse2: request?.flowSensor[1]['pulse']})
+                if (request?.flowSensor[1].length && request?.flowSensor[1]['timeout']) deviceSetting.set({flowTimeout2: request?.flowSensor[1]['timeout']})
 
                 await deviceSetting.save()
 
