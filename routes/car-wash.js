@@ -5,7 +5,7 @@ const carWashController = require('../controllers/carWashController')
 
 router.get('/car-wash', authMiddleware.isAuth, carWashController.getCarWash)
 router.post('/car-wash/change-name', authMiddleware.userRole, carWashController.changeName)
-router.get('/car-wash/:point_id', authMiddleware.isAuth, carWashController.getSingleCarWashPoint)
+router.get('/car-wash/points/:point_id', authMiddleware.isAuth, carWashController.getSingleCarWashPoint)
 router.post('/car-wash/create', authMiddleware.technicianRole, carWashController.addACarWash)
 router.post('/car-wash/remove', authMiddleware.technicianRole, carWashController.removeTheCarWash)
 router.get('/car-wash/device', authMiddleware.isAuth, carWashController.getCarWashDevices)
