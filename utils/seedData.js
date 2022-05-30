@@ -1,4 +1,5 @@
 const constants = require('../utils/constants')
+const uuid = require("uuid");
 
 const users = [
     {
@@ -52,6 +53,7 @@ const carWashPoints = [
         user_id: 2,
         technician_id: 3,
         car_wash_point_name: null,
+        token: uuid.v4(),
         createdAt: new Date(),
         updatedAt: new Date()
     },
@@ -59,6 +61,7 @@ const carWashPoints = [
         user_id: 2,
         technician_id: 3,
         car_wash_point_name: 'car wash 2',
+        token: uuid.v4(),
         createdAt: new Date(),
         updatedAt: new Date()
     },
@@ -66,6 +69,7 @@ const carWashPoints = [
         user_id: 4,
         technician_id: 3,
         car_wash_point_name: null,
+        token: uuid.v4(),
         createdAt: new Date(),
         updatedAt: new Date()
     },
@@ -122,8 +126,8 @@ const deviceSettings = [
         flowTimeout2: 5000,
         hpt: constants.deviceSettings.hpt.Enabled,
         service: 2000,
-        component: JSON.stringify([1,2,3]),
-        relayOutput: JSON.stringify([[1,2], [3,4]]),
+        component: JSON.stringify([1, 2, 3]),
+        relayOutput: JSON.stringify([[1, 2], [3, 4]]),
         bingoThr: 10000,
         bingoVal: 20000,
         hopper: constants.deviceSettings.hopper.Enabled,
@@ -168,8 +172,8 @@ const deviceSettings = [
         flowTimeout2: 5000,
         hpt: constants.deviceSettings.hpt.Enabled,
         service: 2000,
-        component: JSON.stringify([2,3,4]),
-        relayOutput: JSON.stringify([[1,2], [3,4]]),
+        component: JSON.stringify([2, 3, 4]),
+        relayOutput: JSON.stringify([[1, 2], [3, 4]]),
         bingoThr: 10000,
         bingoVal: 20000,
         hopper: constants.deviceSettings.hopper.Enabled,
@@ -214,8 +218,8 @@ const deviceSettings = [
         flowTimeout2: 5000,
         hpt: constants.deviceSettings.hpt.Enabled,
         service: 2000,
-        component: JSON.stringify([5,6,7]),
-        relayOutput: JSON.stringify([[1,2], [3,4]]),
+        component: JSON.stringify([5, 6, 7]),
+        relayOutput: JSON.stringify([[1, 2], [3, 4]]),
         bingoThr: 10000,
         bingoVal: 20000,
         hopper: constants.deviceSettings.hopper.Enabled,

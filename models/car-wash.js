@@ -21,6 +21,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
+        token: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
     }, {
         sequelize,
         modelName: 'CarWashPoints',

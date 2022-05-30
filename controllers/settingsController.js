@@ -1,3 +1,6 @@
+const {connect, StringCodec, Empty} = require('nats')
+const {Op} = require('sequelize')
+
 const DeviceSettings = require('../models').deviceSettings
 const CarWashPoint = require('../models').carWashPoint
 const CarWashDevice = require('../models').carWashDevice
@@ -6,52 +9,65 @@ const TotalComponent = require('../models').total_components
 
 const constants = require('../utils/constants')
 
-const {connect, StringCodec, Empty} = require('nats')
 const sc = StringCodec();
 
 const publishToNats = async ({commandName, command, device_id}) => {
-    const nc = await connect({servers: process.env.NATS_SERVER});
-    const sub = nc.subscribe("commands");
+    const nc = await connect({
+        servers: process.env.NATS_SERVER,
+        user: process.env.NATS_USERNAME,
+        pass: process.env.NATS_PASSWORD,
+    });
 
+    const msub = nc.subscribe("command.*");
     (async (sub) => {
+        // console.log(`listening for ${sub.getSubject()} requests [uptime | stop]`);
         for await (const m of sub) {
-            if (m.respond(sc.encode(JSON.stringify({commandName, command, device_id})))) {
-                // console.info(`[command] handled #${sub.getProcessed()}:  ${sc.decode(m.data)}`);
+            const chunks = m.subject.split(".");
+
+            if (chunks[1] === `device${device_id}`) {
+                m.respond(sc.encode(`${commandName}.device${device_id}`));
+                // m.respond(sc.encode(command));
+                nc.drain().catch((err) => {
+                    console.log("error draining", err);
+                });
             } else {
-                console.log(`[command] #${sub.getProcessed()} ignored - no reply subject`);
+                nc.drain().catch((err) => {
+                    console.log("error draining", err);
+                });
+                console.log(
+                    `[command] #${sub.getProcessed()} ignoring request for ${m.subject}`,
+                );
             }
         }
-    })(sub);
+    })(msub);
 }
 
 const getCommands = async (req, res) => {
     try {
         const {id} = req.query;
 
-        const nc = await connect({servers: process.env.NATS_SERVER});
+        const nc = await connect({
+            servers: process.env.NATS_SERVER,
+            user: process.env.NATS_USERNAME,
+            pass: process.env.NATS_PASSWORD,
+        });
 
         let command;
-        await nc.request("commands", Empty, {timeout: 10000})
+
+        await nc.request(`command.device${JSON.parse(id)[0]}`, Empty, {timeout: 10000})
             .then((m) => {
                 command = sc.decode(m.data)
-                // console.log(`got response testing: ${sc.decode(m.data)}`);
+                console.log(`got response testing: ${sc.decode(m.data)}`);
+                // return res.send({msg: sc.decode(m.data)})
             })
             .catch((err) => {
                 console.log(`problem with request: ${err.message}`);
-                return res.send({msg: err.message});
+                command = err.message;
             });
 
         await nc.close();
 
-        let responseCommand = 0;
-
-        JSON.parse(id).forEach((item => {
-            if (item == JSON.parse(command).device_id) {
-                responseCommand = JSON.parse(command).command
-            }
-        }))
-
-        return res.send({command: responseCommand})
+        return res.send({command})
     } catch (e) {
         console.log('something went wrong', e)
     }

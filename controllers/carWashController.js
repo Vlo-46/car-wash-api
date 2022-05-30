@@ -1,5 +1,6 @@
 const {Op} = require("sequelize");
 const constants = require('../utils/constants')
+const uuid = require("uuid");
 
 const CarWashPoint = require('../models').carWashPoint
 const CarWashDevice = require('../models').carWashDevice
@@ -76,10 +77,13 @@ const addACarWash = async (req, res) => {
     try {
         const {user_id} = req.body;
         const {id} = req.user
+        const car_wash_token = uuid.v4();
+
 
         const newCarWash = await CarWashPoint.create({
             user_id,
-            technician_id: id
+            technician_id: id,
+            token: car_wash_token
         })
 
         return res.send({success: true, carWashPoint: newCarWash})
