@@ -104,9 +104,18 @@ const removeTheCarWash = async (req, res) => {
                     {technician_id: id}
                 ]
             }
-        }).then(() => {
-            res.send({success: true})
-        });
+        })
+
+        await CarWashDevice.destroy({
+            where: {
+                [Op.and]: [
+                    {car_wash_point_id},
+                    {technician_id: id}
+                ]
+            }
+        })
+
+        res.send({success: true})
 
     } catch (e) {
         console.log('something went wrong', e)
