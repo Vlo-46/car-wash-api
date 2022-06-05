@@ -124,9 +124,32 @@ const removeTheCarWash = async (req, res) => {
 
 const getCarWashDevices = async (req, res) => {
     try {
-        const carWashDevices = await CarWashDevice.findAll({
-            where: {technician_id: req.user.id}
-        })
+        const {role} = req.user;
+
+        let carWashDevices = []
+
+        if (role === constants.userTypes.TECHNICIAN) {
+            carWashDevices = await CarWashDevice.findAll({
+                where: {technician_id: req.user.id}
+            })
+        }
+        if (role === constants.userTypes.USER) {
+            let pointsId = []
+            const carWashPointIds = await CarWashPoint.findAll({
+                where: {
+                    user_id: req.user.id
+                },
+                attributes: ['id']
+            })
+            carWashPointIds?.forEach(item => {
+                pointsId.push(item.id)
+            })
+
+            carWashDevices = await CarWashDevice.findAll({
+                where: {car_wash_point_id: pointsId}
+            })
+        }
+
 
         if (!carWashDevices) return res.send({success: false, msg: 'Not found'})
 
