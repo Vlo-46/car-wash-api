@@ -1,4 +1,5 @@
 'use strict';
+
 const {Model} = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
@@ -31,6 +32,16 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     const User = sequelize.define('User')
+    // CarWashPoints.hasOne(User, {
+    //     foreignKey: 'id',
+    //     as: 'user_info'
+    // })
+    //
+    // CarWashPoints.belongsTo(User, {
+    //     foreignKey: 'id',
+    //     as: 'technician_info'
+    // })
+
     CarWashPoints.belongsTo(User, {
         foreignKey: 'id',
         onDelete: 'cascade'

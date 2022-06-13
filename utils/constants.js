@@ -59,7 +59,39 @@ const deviceSettings = {
     },
 }
 
+const listOfSubjects = {
+    COUNTERS_AND_FLAGS: 'api.data.counters_and_flags',
+    COUNTERS_RESET: 'api.response.counters.reset',
+    SERVICE_RESET: 'api.response.service.reset',
+    FREE_MODE_ON: 'api.response.freemode.on',
+    FREE_MODE_OFF: 'api.response.freemode.off',
+    DEVICE_DISABLE: 'api.response.device.disable',
+    DEVICE_ENABLE: 'api.response.device.enable',
+    SETTINGS_BASIC: 'api.data.settings.basic',
+    SETTINGS_BASIC_WRITE: 'api.response.settings.basic.write',
+    SETTINGS_EXTENDED: 'api.data.settings.extended',
+    SETTINGS_EXTENDED_WRITE: 'api.response.settings.extended.write',
+    DATETIME_SET: 'api.response.datetime.set'
+}
+
+const listOfCommands = {
+    COUNTERS_AND_FLAGS_UPDATE: 'api.command.counters_and_flags.update.',
+    COUNTERS_RESET: 'api.command.counters.reset.',
+    SERVICE_RESET: 'api.command.service.reset.',
+    FREE_MODE_ON: 'api.command.freemode.on.',
+    FREE_MODE_OFF: 'api.command.freemode.off.',
+    DEVICE_DISABLE: 'api.command.device.disable.',
+    DEVICE_ENABLE: 'api.command.device.enable.',
+    SETTINGS_BASIC_READ: 'api.command.settings.basic.read.',
+    SETTINGS_BASIC_WRITE: 'api.command.settings.basic.write.',
+    SETTINGS_EXTENDED_READ: 'api.command.settings.extended.read.',
+    SETTINGS_EXTENDED_WRITE: 'api.command.settings.extended.write.',
+    DATETIME_SET: 'api.command.datetime.set.'
+}
+
 module.exports = {
     userTypes,
-    deviceSettings
+    deviceSettings,
+    listOfSubjects,
+    listOfCommands
 }

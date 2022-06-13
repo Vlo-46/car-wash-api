@@ -2,6 +2,7 @@ const {Op} = require("sequelize");
 const constants = require('../utils/constants')
 const uuid = require("uuid");
 
+const User = require("../models").users
 const CarWashPoint = require('../models').carWashPoint
 const CarWashDevice = require('../models').carWashDevice
 const DeviceSettings = require('../models').deviceSettings
@@ -35,13 +36,37 @@ const getCarWash = async (req, res) => {
 
         if (role === constants.userTypes.TECHNICIAN) {
             carWashPoints = await CarWashPoint.findAll({
-                where: {technician_id: id}
+                where: {technician_id: id},
+                // include: [
+                //     {
+                //         model: User,
+                //         as: 'user_info',
+                //         attributes: ['id', 'username', 'email']
+                //     },
+                //     {
+                //         model: User,
+                //         as: 'technician_info',
+                //         attributes: ['id', 'username', 'email']
+                //     },
+                // ]
             })
         }
 
         if (role === constants.userTypes.USER) {
             carWashPoints = await CarWashPoint.findAll({
-                where: {user_id: id}
+                where: {user_id: id},
+                // include: [
+                //     {
+                //         model: User,
+                //         as: 'user_info',
+                //         attributes: ['username', 'email']
+                //     },
+                //     {
+                //         model: User,
+                //         as: 'technician_info',
+                //         attributes: ['username', 'email']
+                //     },
+                // ]
             })
         }
 

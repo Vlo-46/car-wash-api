@@ -49,6 +49,16 @@ module.exports = (sequelize, DataTypes) => {
 
     const CarWashPoints = sequelize.define('CarWashPoints')
 
+    User.hasOne(CarWashPoints, {
+        foreignKey: 'user_id',
+        as: 'user_info'
+    })
+
+    User.hasOne(CarWashPoints, {
+        foreignKey: 'technician_id',
+        as: 'technician_info'
+    })
+
     User.hasMany(CarWashPoints, {
         foreignKey: 'user_id',
         as: 'user_points',
