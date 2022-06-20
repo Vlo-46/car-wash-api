@@ -124,11 +124,13 @@ const getCounter = async (req, res) => {
 
                         await counter.save()
 
-                        return res.send({success: true})
+                        // return res.send({success: true})
                     })
                 } else {
                     return res.send({success: false})
                 }
+
+            return res.send(response)
             }
         })();
     } catch (e) {
